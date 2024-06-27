@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button  x:Name="Button1" Width="100" Height="50">Klick mich!</Button>
+        <Button  x:Name="Button1" Width="100" Height="50">
+            Klick mich!
+        </Button>
     </Grid>
 </Window>
