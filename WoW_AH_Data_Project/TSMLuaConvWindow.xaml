@@ -1,20 +1,18 @@
-﻿<Window x:Class="WoW_AH_Data_Project.MainWindow"
+﻿<Window x:Class="WoW_AH_Data_Project.TSMLuaConvWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WoW_AH_Data_Project"
         mc:Ignorable="d"
-        Title="TSM AppData.lua to csv converter" Height="450" Width="800">
+        Title="TSMLuaConvWindow" Height="450" Width="800">
     <StackPanel Margin="50">
-        <Label HorizontalAlignment="Center">Choose what to do</Label>
-        <Button x:Name="Btn_choose_lua_conv" Click="Btn_choose_lua_conv_Click" Margin="10" Height="35" Width="175">Convert Lua</Button>
-        <!--<Label>Enter/Choose TSM Path i.E "L:\WoW\World of Warcraft\_classic_\Interface\AddOns\TradeSkillMaster_AppHelper\AppData.lua" :</Label>
+        <Label>Enter/Choose TSM Path i.E "L:\WoW\World of Warcraft\_classic_\Interface\AddOns\TradeSkillMaster_AppHelper\AppData.lua" :</Label>
         <TextBox x:Name="Txtb_sel_tsm_path"></TextBox>
         <Button x:Name="Btn_sel_tsm_path" Click="Btn_sel_tsm_path_Click" Margin="10" Height="35" Width="175">Choose TSM AppHelper Folder</Button>
         <Label>Enter/Choose Output Path(if empty, the path of this file's execution is used):</Label>
         <TextBox x:Name="Txtb_sel_output_path"></TextBox>
         <Button x:Name="Btn_sel_output_path" Click="Btn_sel_output_path_Click" Margin="10" Height="35" Width="175">Choose Output Path</Button>
-        <Button x:Name="Btn_conv_lua_data" Click="Btn_conv_lua_data_Click" IsEnabled="False" Margin="10" Height="35" Width="175">Convert Lua Data</Button>-->
+        <Button x:Name="Btn_conv_lua_data" Click="Btn_conv_lua_data_Click" IsEnabled="False" Margin="10" Height="35" Width="175">Convert Lua Data</Button>
     </StackPanel>
 </Window>
