@@ -5,10 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WoW_AH_Data_Project"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button  x:Name="Button1" Width="100" Height="50">
-            Klick mich!
-        </Button>
-    </Grid>
+        Title="TSM AppData.lua to csv converter" Height="450" Width="800">
+    <StackPanel Margin="50">
+        <Label>Enter/Choose TSM Path i.E "L:\WoW\World of Warcraft\_classic_\Interface\AddOns\TradeSkillMaster_AppHelper\AppData.lua" :</Label>
+        <TextBox x:Name="txtb_sel_tsm_path"></TextBox>
+        <Button x:Name="btn_sel_tsm_path" Click="btn_sel_tsm_path_Click" Margin="10" Height="35" Width="175">Choose TSM AppHelper Folder</Button>
+        <Label>Enter/Choose Output Path(if empty, the path of this file's execution is used):</Label>
+        <TextBox x:Name="txtb_sel_output_path"></TextBox>
+        <Button x:Name="btn_sel_output_path" Click="btn_sel_output_path_Click" Margin="10" Height="35" Width="175">Choose Output Path</Button>
+        <Button x:Name="btn_conv_lua_data" Click="btn_conv_lua_data_Click" IsEnabled="False" Margin="10" Height="35" Width="175">Convert Lua Data</Button>
+    </StackPanel>
 </Window>
