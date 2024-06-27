@@ -35,7 +35,7 @@ namespace WoW_AH_Data_Project
             WinForms.FolderBrowserDialog dialog = new WinForms.FolderBrowserDialog();
             // Default path to browse from is the path of this file's execution
             dialog.InitialDirectory = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            // Variable to store the button pressed by user when selecting the path
+            // Pop Dialog and make variable to store the button pressed by user when selecting the path
             WinForms.DialogResult result = dialog.ShowDialog();
             // If user pressed "ok" check if the AppData.lua file exists in the chosen path
             if (result == WinForms.DialogResult.OK)
@@ -83,7 +83,7 @@ namespace WoW_AH_Data_Project
             WinForms.FolderBrowserDialog dialog = new WinForms.FolderBrowserDialog();
             // Default path to browse from is the path of this file's execution
             dialog.InitialDirectory = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            // Variable to store the button pressed by user when selecting the path
+            // Pop Dialog and make variable to store the button pressed by user when selecting the path
             WinForms.DialogResult result = dialog.ShowDialog();
             // If user pressed "ok" set the variable for the csv output path to the selected path
             if (result == WinForms.DialogResult.OK)
