@@ -8,6 +8,7 @@
         Title="TSM AppData.lua to csv converter" Height="450" Width="800">
     <StackPanel Margin="50">
         <Label HorizontalAlignment="Center">Choose what to do</Label>
-        <Button x:Name="Btn_choose_lua_conv" Click="Btn_choose_lua_conv_Click" Margin="10" Height="35" Width="175">Convert Lua</Button>
+        <Button x:Name="Btn_choose_lua_conv" Click="Btn_choose_lua_conv_Click" Margin="10" Height="35" Width="250">Create Recent and Regular Marketvalue CSVs</Button>
+        <Button x:Name="Btn_choose_combine_csvs" Click="Btn_choose_combine_csvs_Click"  Margin="10" Height="35" Width="250">Combine Sales and Purchases CSVs</Button>
     </StackPanel>
 </Window>

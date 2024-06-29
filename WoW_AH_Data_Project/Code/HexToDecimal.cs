@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TSM_Data_Converter;
+namespace WoW_AH_Data_Project.Code;
 
 // From https://www.geeksforgeeks.org/convert-base-decimal-vice-versa/
 // C# program to convert 
