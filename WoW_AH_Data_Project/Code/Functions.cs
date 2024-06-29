@@ -1,7 +1,7 @@
-﻿using System.IO;
+﻿namespace WoW_AH_Data_Project.Code;
+using System.IO;
+using System.Reflection;
 using System.Text;
-
-namespace WoW_AH_Data_Project.Code;
 
 public class Functions
 {
@@ -13,9 +13,10 @@ public class Functions
     }
 
     // Function for logging
-    public static void Log(string file_path, string input)
+    public static void Log(string input)
     {
-        using (StreamWriter sw = File.AppendText(file_path))
+        // Variable for path for the log file, basically the path of app execution
+        using (StreamWriter sw = File.AppendText(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\log.txt"))
         {
             sw.WriteLine(input);
             sw.Close();
