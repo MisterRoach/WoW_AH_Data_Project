@@ -1,10 +1,9 @@
-﻿using System.IO;
+﻿namespace WoW_AH_Data_Project.Code;
+using System.IO;
 using System.Windows;
 using System.Reflection;
 using WoW_AH_Data_Project;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace WoW_AH_Data_Project.Code;
 
 public class TSM_Lua_To_csv
 {
