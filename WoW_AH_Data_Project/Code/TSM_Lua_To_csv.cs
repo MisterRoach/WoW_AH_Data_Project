@@ -1,11 +1,10 @@
 ﻿using System.IO;
 using System.Windows;
 using System.Reflection;
-using TSM_Data_Converter;
 using WoW_AH_Data_Project;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace TSM_Data_Converter;
+namespace WoW_AH_Data_Project.Code;
 
 public class TSM_Lua_To_csv
 {
@@ -13,14 +12,6 @@ public class TSM_Lua_To_csv
     {
         try
         {
-            // Variables for the different paths for the files
-            // TSM lua file path
-            //string tsm_lua_file_path = @"L:\WoW\World of Warcraft\_classic_\Interface\AddOns\TradeSkillMaster_AppHelper\AppData.lua";
-            // Recent market values output path
-            //string recent_mv_output_path = @"C:\Users\renes\Documents\WoW\AH\csharp\TSM_recent_market_values.csv";
-            // Regular market values outputh path
-            //string regular_mv_output_path = @"C:\Users\renes\Documents\WoW\AH\csharp\TSM_regular_market_values.csv";
-
             // String array that gets filled with the parts gotten by splitting the individual entries of the market values files
             string[] entry_subparts;
 
@@ -88,7 +79,7 @@ public class TSM_Lua_To_csv
         }
         finally
         {
-            Console.WriteLine("Executing finally block.");
+            Console.WriteLine("Executing finally block of TSM_Lua_To_csv.cs.");
         }
 
     }

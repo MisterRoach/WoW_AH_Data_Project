@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 
-namespace TSM_Data_Converter;
+namespace WoW_AH_Data_Project.Code;
 
 public class Functions
 {

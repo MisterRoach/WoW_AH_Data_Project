@@ -9,7 +9,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WinForms = System.Windows.Forms;
-using TSM_Data_Converter;
 using System.IO;
 using System.Reflection;
 
@@ -31,6 +30,15 @@ namespace WoW_AH_Data_Project
             TSMLuaConvWindow tSMLuaConvWindow = new TSMLuaConvWindow();
             // Show window
             tSMLuaConvWindow.Show();
+        }
+
+        private void Btn_choose_combine_csvs_Click(object sender, RoutedEventArgs e)
+        {
+            // Make window object
+            CombineCSVsWindow combineCSVsWindow = new CombineCSVsWindow();
+            // Show window
+            combineCSVsWindow.Show();
+
         }
     }
 }
