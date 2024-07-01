@@ -1,18 +1,5 @@
 ﻿namespace WoW_AH_Data_Project.Code;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Documents;
-using WoW_AH_Data_Project.Code;
-using System.Windows.Data;
 using WinForms = System.Windows.Forms;
 
 public class ExceptionHandler

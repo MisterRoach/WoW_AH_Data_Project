@@ -2,10 +2,14 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
-
+/// <summary>
+/// Class with utility functions
+///  <remark>test</remark>
+///  <returns>test</returns>
+/// </summary>
 public class Functions
 {
-    // Function to add text into files
+    // /// Function to add text into files
     public static void AddText(FileStream fs, string value)
     {
         byte[] info = new UTF8Encoding(true).GetBytes(value);

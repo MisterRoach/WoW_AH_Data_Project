@@ -1,9 +1,5 @@
 ﻿namespace WoW_AH_Data_Project.Code;
 using System.IO;
-using System.Windows;
-using System.Reflection;
-using WoW_AH_Data_Project;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class TSM_Lua_To_csv
 {
@@ -50,7 +46,7 @@ public class TSM_Lua_To_csv
                 fs.Close();
             }
             // Create or overwrite file for the regular/normal market values output
-            using (FileStream fs = File.Create(csv_output_path+ "\\TSM_regular_market_values.csv"))
+            using (FileStream fs = File.Create(csv_output_path + "\\TSM_regular_market_values.csv"))
             {
                 // Add headers
                 Functions.AddText(fs, "itemString;MarketValue\n");

@@ -1,22 +1,22 @@
 ﻿namespace WoW_AH_Data_Project.Code;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Numerics;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Documents;
-using WoW_AH_Data_Project;
-using System.Windows.Data;
-using WinForms = System.Windows.Forms;
-
+/// <summary>
+/// Class that contains method for combining cvs
+/// </summary>
 public class Combine_Sales_Purchases_Csv
 {
+    /// <summary>
+    /// Method for combining Accounting_*_purchases.csv and Accounting_*_sales.csv
+    /// </summary>
+    /// <param name="purchases_csv_path">Variable holding path to Accounting_*_purchases.csv file</param>
+    /// <param name="sales_csv_path">Variable holding path to Accounting_*_sales.csv file</param>
+    /// <param name="output_csv_path">Variable holding path for output file</param>
     public static void Combine_Sales_Purchases_Csvs(string purchases_csv_path, string sales_csv_path, string output_csv_path)
     {
         // Variable we store the CultureInfo value of the system in because we want numbers
@@ -181,11 +181,11 @@ public class Combine_Sales_Purchases_Csv
                     sales_price = decimal.Parse(sales_data.price),
                     quantity_purchased = purchases_data.quantity,
                     quantity_sold = sales_data.quantity,
-                    average_income_per_unit= Math.Round(decimal.Parse(sales_data.price) / decimal.Parse(sales_data.quantity), 4),
+                    average_income_per_unit = Math.Round(decimal.Parse(sales_data.price) / decimal.Parse(sales_data.quantity), 4),
                     average_cost_per_unit = Math.Round(decimal.Parse(purchases_data.price) / decimal.Parse(purchases_data.quantity), 4),
                     profit_per_unit = Math.Round((decimal.Parse(sales_data.price) / decimal.Parse(sales_data.quantity)) - (decimal.Parse(purchases_data.price) / decimal.Parse(purchases_data.quantity)), 4),
                     profit = Math.Round((Math.Min(decimal.Parse(sales_data.quantity), decimal.Parse(purchases_data.quantity))) * ((decimal.Parse(sales_data.price) / decimal.Parse(sales_data.quantity)) - (decimal.Parse(purchases_data.price) / decimal.Parse(purchases_data.quantity))), 4)
-                }; 
+                };
             // Foreach entry that we have in the result of the profits query
             foreach (var entry in profits_query)
             {
@@ -214,7 +214,7 @@ public class Combine_Sales_Purchases_Csv
             // Call my ExceptionHandler and pass the exception to it
             ExceptionHandler.MrExceptionHandler(e.ToString());
         }
-        finally 
+        finally
         {
             Functions.Log("Executing finally block of Combine_Sales_Purchases_Csv.cs.");
             // Set the CultureInfo value back to the systems standard if it's not already

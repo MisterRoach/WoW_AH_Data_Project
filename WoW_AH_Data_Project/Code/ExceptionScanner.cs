@@ -1,12 +1,6 @@
 ﻿namespace WoW_AH_Data_Project.Code;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using WinForms = System.Windows.Forms;
-using WoW_AH_Data_Project;
 
 
 public class ExceptionScanner
@@ -27,7 +21,7 @@ public class ExceptionScanner
         // Check if we find a known exception and if so, set own description in addition to the regular exception text
         // Look if we got a match when checking for "UnauthorizedAccessException" and or "output.cs.* is denied"
         if (UAE.Count > 0)
-        {   
+        {
             exception_scan_result = "Look's like access to the output path got denied.\n Try to choose another path, allow the action in Windows Security\n or run this file as administrator.";
         }
         // Look if we got a match for "Could not find file" and or with ".*output.csv"
@@ -38,5 +32,5 @@ public class ExceptionScanner
         }
         // Return the result
         return exception_scan_result;
-    }   
+    }
 }

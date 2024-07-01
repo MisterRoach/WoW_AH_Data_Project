@@ -1,8 +1,4 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
-
-namespace WoW_AH_Data_Project
+﻿namespace WoW_AH_Data_Project
 {
     /// <summary>
     /// Interaction logic for App.xaml
