@@ -1,22 +1,16 @@
-﻿namespace WoW_AH_Data_Project.Code;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿namespace WoWAHDataProject.Code;
 // From https://www.geeksforgeeks.org/convert-base-decimal-vice-versa/
 // C# program to convert 
 // a number from any base
 // to decimal
 
-public class GFG
+public static class GFG
 {
     // To return value of a char. 
     // For example, 2 is returned
     // for '2'. 10 is returned 
     // for 'A', 11 for 'B'
-    public static int val(char c)
+    public static int Val(char c)
     {
         if (c >= '0' && c <= '9')
             return (int)c - '0';
@@ -27,8 +21,8 @@ public class GFG
     // Function to convert a 
     // number from given base 
     // 'b' to decimal
-    public static int toDeci(string str,
-                    int b_ase)
+    public static int ToDeci(string str,
+                    int @base)
     {
         int len = str.Length;
         int power = 1; // Initialize 
@@ -44,14 +38,14 @@ public class GFG
             // A digit in input number 
             // must be less than 
             // number's base
-            if (val(str[i]) >= b_ase)
+            if (Val(str[i]) >= @base)
             {
                 Console.WriteLine("Invalid Number");
                 return -1;
             }
 
-            num += val(str[i]) * power;
-            power = power * b_ase;
+            num += Val(str[i]) * power;
+            power = power * @base;
         }
 
         return num;

@@ -1,18 +1,15 @@
-﻿<Window x:Class="WoWAHDataProject.CombineCSVsWindow"
+﻿<Window x:Class="WoWAHDataProject.ImportCsvsToDatabaseWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WoWAHDataProject"
         mc:Ignorable="d"
-        Title="Combine CSVs" Height="450" Width="800">
+        Title="Import Csv To Database" Height="300" Width="500">
     <StackPanel Margin="50">
         <Label>Choose path of sales and puchases csv files :</Label>
         <TextBox x:Name="TxtbSelectCsvsPath"></TextBox>
         <Button x:Name="BtnSelectCsvsPath" Click="BtnSelectCsvsPathClick" Margin="10" Height="35" Width="175">Choose CSV files path</Button>
-        <Label>Enter/Choose Output Path(if empty, the path of this file's execution is used):</Label>
-        <TextBox x:Name="TxtbSelectOutputPath"></TextBox>
-        <Button x:Name="BtnSelectOutputPath" Click="BtnSelectOutputPathClick" Margin="10" Height="35" Width="175">Choose output Path</Button>
-        <Button x:Name="BtnCombineCsvs" Click="BtnCombineCsvsClick" IsEnabled="False" Margin="10" Height="35" Width="175">Combine CSVs</Button>
+        <Button x:Name="BtnImportCsvsToDb" Click="BtnImportCsvsToDbClick" IsEnabled="False" Margin="10" Height="35" Width="175">Import CSVs to Database</Button>
     </StackPanel>
 </Window>
