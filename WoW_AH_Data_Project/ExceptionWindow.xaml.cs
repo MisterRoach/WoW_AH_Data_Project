@@ -1,9 +1,5 @@
-﻿namespace WoW_AH_Data_Project;
+﻿namespace WoWAHDataProject;
 using System.Windows;
-
-/// <summary>
-/// Interaction logic for ExceptionWindow.xaml
-/// </summary>
 public partial class ExceptionWindow : Window
 {
     public ExceptionWindow()
