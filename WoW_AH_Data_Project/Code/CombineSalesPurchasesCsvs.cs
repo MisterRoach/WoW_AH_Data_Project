@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Serilog;
 public static class CombineSalesPurchasesCsvs
 {
     public static void CombineSalesPurchasesCsv(string purchasesCsvPath, string salesCsvPath, string outputCsvPath)
@@ -15,7 +16,8 @@ public static class CombineSalesPurchasesCsvs
         var culture = CultureInfo.InvariantCulture;
         try
         {
-            Functions.Log($"Original System's CultureInfo Setting is {culture}.");
+            File.ReadAllText("\\gwhgot");
+            Log.Information($"Original System's CultureInfo Setting is {culture}.");
             // Test double to see how the systems CultureInfo value affects the separator
             const double dotTestNum = 100.0001;
             MatchCollection dotMatch = Regex.Matches(dotTestNum.ToString(), @"\.");
@@ -23,14 +25,14 @@ public static class CombineSalesPurchasesCsvs
             // If the Regex.Match found something we know system uses dot as separator
             if (dotMatch.Count > 0)
             {
-                Functions.Log("System uses dot as decimal separator!");
+                Log.Information("System uses dot as decimal separator!");
                 boolDotSep = true;
             }
             else
             {
                 // Set the CurrentInfo value of the system to en-EN for now, ensuring that our code produces numbers with a dot . as decimal separator
                 CultureInfo.CurrentCulture = new CultureInfo("en-EN", false);
-                Functions.Log($"Setting system's CultureInfo to {CultureInfo.CurrentCulture.Name} to have a temporary set standard for the decimal separator. Switching back later.");
+                Log.Information($"Setting system's CultureInfo to {CultureInfo.CurrentCulture.Name} to have a temporary set standard for the decimal separator. Switching back later.");
             }
             // Reading the content of the two csv files into variables
             var purchasesCsvContent = File.ReadAllText(purchasesCsvPath);
@@ -140,15 +142,15 @@ public static class CombineSalesPurchasesCsvs
             // Set the CultureInfo value back to the systems standard
             //CultureInfo.CurrentCulture = new CultureInfo(culture, false);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
             //CultureInfo.CurrentCulture = new CultureInfo(culture, false);
-            Functions.Log($"Set systems CultureInfo value back to {culture}.");
-            ExceptionHandling.ExceptionHandler(e.ToString());
+            Log.Information($"Set systems CultureInfo value back to {culture}.");
+            ExceptionHandling.ExceptionHandler("CombineSalesPurchasesCsv.cs->same Method", ex);
         }
         finally
         {
-            Functions.Log("Executing finally block of Combine_Sales_Purchases_Csv.cs.");
+            Log.Information("Executing finally block of Combine_Sales_Purchases_Csv.cs.");
             //if (CultureInfo.CurrentCulture.Name != culture)
             //{
             //    CultureInfo.CurrentCulture = new CultureInfo(culture, false);

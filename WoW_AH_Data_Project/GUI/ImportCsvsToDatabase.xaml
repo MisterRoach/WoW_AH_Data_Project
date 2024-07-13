@@ -1,0 +1,18 @@
+﻿<Window x:Class="WoWAHDataProject.GUI.ImportCsvsToDatabaseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WoWAHDataProject.GUI"
+        mc:Ignorable="d"
+        Title="Import Csv To Database" Height="275" Width="650">
+    <Grid>
+        <StackPanel Margin="50">
+        <Label>Choose path of sales and puchases csv files :</Label>
+        <TextBox x:Name="TxtbSelectCsvsPath"></TextBox>
+        <Button x:Name="BtnSelectCsvsPath" Click="BtnSelectCsvsPathClick" Margin="10" Height="35" Width="175">Choose CSV files path</Button>
+        <Button x:Name="BtnImportCsvsToDb" Click="BtnImportCsvsToDbClick" IsEnabled="False" Margin="10" Height="35" Width="175">Import CSVs to Database</Button>
+        </StackPanel>
+        <Image x:Name="bottomLeftImage" HorizontalAlignment="Left" Width="200" Height="200" Margin="22,150,0,16"/>
+    </Grid>
+</Window>

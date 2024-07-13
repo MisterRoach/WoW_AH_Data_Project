@@ -5,12 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WoWAHDataProject"
         mc:Ignorable="d"
-        Title="WoW AH Data Project" Height="450" Width="800">
-    <StackPanel Margin="50">
-        <Label HorizontalAlignment="Center">Choose what to do</Label>
-        <Button x:Name="BtnSelectLuaConversion" Click="BtnSelectLuaConversionClick" Margin="10" Height="35" Width="250">Create Recent and Regular Marketvalue CSVs</Button>
-        <Button x:Name="BtnSelectCombineCsvs" Click="BtnSelectCombineCsvsClick"  Margin="10" Height="35" Width="250">Combine Sales and Purchases CSVs</Button>
-        <Button x:Name="BtnSelectImportToDB" Click="BtnSelectImportToDBClick" Margin="10" Height="35" Width="250">Import CSVs to Database</Button>
-        <Button x:Name="BtnSelectCreateDB" Click="BtnSelectCreateDBClick" Margin="10" Height="35" Width="250">Create Database</Button>
-    </StackPanel>
+        Title="WindowMain" Height="450" Width="800">
+    <Grid>
+        <StackPanel x:Name="Yoyoyo" Margin="50">
+            <Label HorizontalAlignment="Center">Choose what to do</Label>
+            <Button x:Name="BtnSelectLuaConversion" Click="BtnSelectLuaConversionClick" Margin="10" Height="35" Width="250">Create Recent and Regular Marketvalue CSVs</Button>
+            <Button x:Name="BtnSelectCombineCsvs" Click="BtnSelectCombineCsvsClick"  Margin="10" Height="35" Width="250">Combine Sales and Purchases CSVs</Button>
+            <Button x:Name="BtnSelectImportToDatabase" Click="BtnSelectImportToDatabaseClick" Margin="10" Height="35" Width="250">Import data to database</Button>
+            <Button x:Name="BtnSelectCreateDB" Click="BtnSelectCreateDBClick" Margin="10" Height="35" Width="250">Create Database</Button>
+        </StackPanel>
+        <Image x:Name="bottomLeftImage" HorizontalAlignment="Left" Width="200" Height="200" Margin="22,225,0,16"/>
+        <Image x:Name="centerRightImage" HorizontalAlignment="Left" Width="220" Height="425" Margin="555,4,0,5"/>
+    </Grid>
+
 </Window>
