@@ -3,7 +3,9 @@ using System.Globalization;
 using System.Windows;
 using WoWAHDataProject.Code;
 using WoWAHDataProject.Database;
+using WoWAHDataProject.GUI;
 namespace WoWAHDataProject;
+
 /// <summary>
 /// Window the application opens with
 /// </summary>
@@ -14,14 +16,39 @@ public partial class MainWindow : Window
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Verbose()
             .WriteTo.Console(formatProvider: CultureInfo.CurrentCulture)
-            .WriteTo.File("logs/db_log_.txt",formatProvider: CultureInfo.CurrentCulture,rollingInterval: RollingInterval.Day)
+            .WriteTo.File("logs/main_log_.txt", formatProvider: CultureInfo.CurrentCulture, rollingInterval: RollingInterval.Day)
+            .WriteTo.File("logs/error_log_.txt", restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error,formatProvider: CultureInfo.CurrentCulture, rollingInterval: RollingInterval.Day)
             .CreateLogger();
         Log.Information($"Timestamp for current log session: {DateTime.Now}");
+        InitializeComponent();
+
+        try
+        {
+            Egg.プロ生ちゃんNumber();
+            Log.Information("Miku threw a: " + Egg.えれくとりっく_えんじぇぅ);
+            if(Egg.音)
+            {
+                Egg.Hatch芸術プロ生ちゃんEgg(this);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Information("Awww it failed", ex);
+        }
+        finally
+        {
+        }
 
         // Check .config file for values and set them if they are not set in case of first launch or update them if needed
-        ConfigurationCheck.InitConfigCheck();
-
-        InitializeComponent();
+        try
+        {
+            ConfigurationHelper.InitConfigCheck();
+        }
+        catch
+        (Exception ex)
+        {
+            ExceptionHandling.ExceptionHandler("MainWindow->Tried InitConfigCheck", ex);
+        }
     }
     private void BtnSelectLuaConversionClick(object sender, RoutedEventArgs e)
     {
@@ -39,9 +66,9 @@ public partial class MainWindow : Window
         DatabaseMain.DataBaseMain();
     }
 
-    private void BtnSelectImportToDBClick(object sender, RoutedEventArgs e)
+    private void BtnSelectImportToDatabaseClick(object sender, RoutedEventArgs e)
     {
-        ImportCsvsToDatabaseWindow importCsvsToDatabaseWindow = new();
-        importCsvsToDatabaseWindow.Show();
+        ImportToDatabaseMainWindow importToDatabaseMainWindow = new();
+        importToDatabaseMainWindow.Show();
     }
 }

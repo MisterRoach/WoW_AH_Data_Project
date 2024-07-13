@@ -1,9 +1,12 @@
-﻿using CsvHelper.Configuration;
-using CsvHelper;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
+using Microsoft.Data.Sqlite;
+using Serilog;
 using System.Globalization;
 using System.IO;
-using Serilog;
-using Microsoft.Data.Sqlite;
+using System.IO.Compression;
+using System.Security.Cryptography;
+using WoWAHDataProject.Code;
 
 namespace WoWAHDataProject.Database
 {
@@ -11,13 +14,13 @@ namespace WoWAHDataProject.Database
     {
         // Declaring how many threads can access the semaphore code part at once
         // ensuring that only one thread can access the database at a time to prevent issues
-        private static readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
+        private static readonly SemaphoreSlim semaphore = new(1, 1);
         // Delay between retries in case of deadlock in ms and max number of retries
         // used in ExecuteWithRetryAsync
         const int DelayBetweenRetries = 500;
         const int maxRetries = 5;
 
-        private static readonly CsvConfiguration CsvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+        private static readonly CsvConfiguration CsvConfig = new(CultureInfo.InvariantCulture)
         {
             BadDataFound = null,
             ReadingExceptionOccurred = re =>
@@ -29,134 +32,188 @@ namespace WoWAHDataProject.Database
 
         // Method started via button press in ImportCsvsToDatabase Window
         // Also using async, Task and await in the code to come so that UI doesn't freeze
-        public static async Task DatabaseImportCsvFiles(IEnumerable<string> csvFiles, string connString)
+        public static async Task<bool> DatabaseImportCsvFiles(IEnumerable<string> csvFiles, string connString)
         {
-            var tasks = csvFiles.Select(file => ProcessCsvFileAsync(file, connString));
-            await Task.WhenAll(tasks);
-        }
-
-        public static async Task ProcessCsvFileAsync(string file, string connString)
-        {
-            Log.Information("File to import: " + file);
-
-            await semaphore.WaitAsync(); // Queue up threads trying to access the database
+            bool exceptionOccured = false;
+            var connection = new SqliteConnection(connString);
+            var tasks = csvFiles.Select(file => ProcessCsvFileAsync(file, connection));
             try
             {
-                await using var connection = new SqliteConnection(connString);
-                Log.Information("Trying to open database connection to:");
-                Log.Information(connString);
-
-                try
-                {
-                    await connection.OpenAsync();
-                    Log.Information("Opened database connection.");
-
-                    var query = "";
-                    // Query snippet that gets append to the actual query depending on the file
-                    var insertIntoFields = @" (
-                                        itemString,
-                                        itemName, 
-                                        stackSize, 
-                                        quantity, 
-                                        price, 
-                                        otherPlayerId, 
-                                        playerId, 
-                                        time, 
-                                        source) 
-                                    VALUES (
-                                        @itemString, 
-                                        @itemName, 
-                                        @stackSize, 
-                                        @quantity, 
-                                        @price, 
-                                        @otherPlayerId, 
-                                        @playerId, 
-                                        @time, 
-                                        @source);";
-                    if (file.Contains("purchases"))
-                    {
-                        query =         @"INSERT OR IGNORE INTO 
-                                        purchases" + insertIntoFields;
-                    }
-                    else if (file.Contains("sales"))
-                    {
-                        query =         @"INSERT OR IGNORE INTO 
-                                        sales" + insertIntoFields;
-                    }
-                    // Queries to insert new otherPlayerNames and playerNames into their respective tables
-                    var queryOtherPlayer = @"
-                                        INSERT INTO otherPlayer (otherPlayerName)
-                                        VALUES (@otherPlayerName)
-                                        ON CONFLICT(otherPlayerName) DO NOTHING;
-                                        SELECT otherPlayerId FROM otherPlayer WHERE otherPlayerName = @otherPlayerName;";
-                    var queryPlayer = @"
-                                        INSERT INTO player (playerName)
-                                        VALUES (@playerName)
-                                        ON CONFLICT(playerName) DO NOTHING;
-                                        SELECT playerId FROM player WHERE playerName = @playerName;";
-                    // Read csv file to list
-                    var rows = ReadEntriesFromCSV(file).ToList();
-                    await ExecuteWithRetryAsync(async () =>
-                    {
-                        await using var transaction = await connection.BeginTransactionAsync();
-                        // Try to execute the transaction with chance of retrying
-                        try
-                        {
-                            foreach (var row in rows)
-                            {
-                                // Insert or get otherPlayerId and add (if not already) otherPlayerName to otherPlayer table
-                                int otherPlayerId;
-                                int playerId;
-                                await using (var sqlcmd = new SqliteCommand(queryOtherPlayer, connection, (SqliteTransaction)transaction))
-                                {
-                                    sqlcmd.Parameters.AddWithValue("@otherPlayerName", row.otherPlayer);
-                                    otherPlayerId = Convert.ToInt32(await sqlcmd.ExecuteScalarAsync(), CultureInfo.CurrentCulture);
-                                }
-                                // Same for the player
-                                await using (var sqlcmd = new SqliteCommand(queryPlayer, connection, (SqliteTransaction)transaction))
-                                {
-                                    sqlcmd.Parameters.AddWithValue("@playerName", row.player);
-                                    playerId = Convert.ToInt32(await sqlcmd.ExecuteScalarAsync(), CultureInfo.CurrentCulture);
-                                }
-
-                                // Insert new sales/purchases data into their respective tables
-                                await using (var sqlcmd = new SqliteCommand(query, connection, (SqliteTransaction)transaction))
-                                {
-                                    sqlcmd.Parameters.AddWithValue("@itemString", row.itemString);
-                                    sqlcmd.Parameters.AddWithValue("@itemName", row.itemName);
-                                    sqlcmd.Parameters.AddWithValue("@stackSize", row.stackSize);
-                                    sqlcmd.Parameters.AddWithValue("@quantity", row.quantity);
-                                    sqlcmd.Parameters.AddWithValue("@price", row.price / 10000 * row.quantity);
-                                    sqlcmd.Parameters.AddWithValue("@otherPlayerId", otherPlayerId);
-                                    sqlcmd.Parameters.AddWithValue("@playerId", playerId);
-                                    sqlcmd.Parameters.AddWithValue("@time", row.time);
-                                    sqlcmd.Parameters.AddWithValue("@source", row.source);
-                                    await sqlcmd.ExecuteNonQueryAsync();
-                                }
-                            }
-                            await transaction.CommitAsync();
-                            Log.Information("Successfully Imported data from: " + file);
-                        }
-                        catch (Exception ex)
-                        {
-                            await transaction.RollbackAsync();
-                            Log.Error("Error during transaction: " + ex);
-                            throw;
-                        }
-                    });
-                    Log.Information("Closing database connection.");
-                    await connection.CloseAsync();
-                }
-                catch (Exception ex)
-                {
-                    Log.Error("Error opening database connection: " + ex);
-                    throw;
-                }
+                await connection.OpenAsync();
+                Log.Information("Opened database connection.");
+                await Task.WhenAll(tasks);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error during processing csv files: " + ex);
+                ExceptionHandling.ExceptionHandler("DataBaseImportCsvs.cs->DatabaseImportCsvFiles->try->WhenAll", ex);
+                exceptionOccured = true;
             }
             finally
             {
-                semaphore.Release(); // Release the semaphore object, allowing the next thread to act
+                if(!exceptionOccured)
+                {
+                    Log.Information("Processed all files.");
+                }
+                Log.Information("Closing database connection.");
+                await connection.CloseAsync();
             }
+            return exceptionOccured;
+        }
+        public static async Task ProcessCsvFileAsync(string file, SqliteConnection connection)
+        {
+            string fileToArchive = Path.Combine(DatabaseMain.dbCsvArchivePath + @"\files", Path.GetFileNameWithoutExtension(file)+DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(CultureInfo.CurrentCulture)+Path.GetExtension(file));
+            string compressedFilePath = Path.Combine(DatabaseMain.dbCsvArchivePath + @"\files\compressed", Path.GetFileNameWithoutExtension(file)+DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(CultureInfo.CurrentCulture));
+            // Queue up threads trying to access the database
+            await semaphore.WaitAsync();
+            Log.Information("File to import: " + file);
+            // Check if we got HashCode for the csv file already stored in archive, if not process it, if yes don't import it again
+            Log.Information("Check if file with exact this data already imported once...");
+            var (fileInArchive, hashString) = await FileInArchiveCheck(file);
+            if (!fileInArchive)
+            {
+                Log.Information("New file or data. Proceeding with import.");
+                var query = "";
+                // Query snippet that gets append to the actual query depending on the file
+                var insertIntoFields = @" (
+                                itemString,
+                                itemName, 
+                                stackSize, 
+                                quantity, 
+                                price, 
+                                otherPlayerId, 
+                                playerId, 
+                                time, 
+                                source) 
+                            VALUES (
+                                @itemString, 
+                                @itemName, 
+                                @stackSize, 
+                                @quantity, 
+                                @price, 
+                                @otherPlayerId, 
+                                @playerId, 
+                                @time, 
+                                @source);";
+                if (file.Contains("purchases"))
+                {
+                    query = @"INSERT OR IGNORE INTO 
+                                purchases" + insertIntoFields;
+                }
+                else if (file.Contains("sales"))
+                {
+                    query = @"INSERT OR IGNORE INTO 
+                                sales" + insertIntoFields;
+                }
+                // Queries to insert new otherPlayerNames and playerNames into their respective tables
+                var queryOtherPlayer = @"
+                                INSERT INTO otherPlayer (otherPlayerName)
+                                VALUES (@otherPlayerName)
+                                ON CONFLICT(otherPlayerName) DO NOTHING;
+                                SELECT otherPlayerId FROM otherPlayer WHERE otherPlayerName = @otherPlayerName;";
+                var queryPlayer = @"
+                                INSERT INTO player (playerName)
+                                VALUES (@playerName)
+                                ON CONFLICT(playerName) DO NOTHING;
+                                SELECT playerId FROM player WHERE playerName = @playerName;";
+                // Read csv file to list
+                var rows = ReadEntriesFromCSV(file).ToList();
+                await ExecuteWithRetryAsync(async () =>
+                {
+                    await using var transaction = await connection.BeginTransactionAsync();
+                    // Try to execute the transaction with chance of retrying
+                    try
+                    {
+                        foreach (var row in rows)
+                        {
+                            // Insert or get otherPlayerId and add (if not already) otherPlayerName to otherPlayer table
+                            int otherPlayerId;
+                            int playerId;
+                            await using (var sqlcmd = new SqliteCommand(queryOtherPlayer, connection, (SqliteTransaction)transaction))
+                            {
+                                sqlcmd.Parameters.AddWithValue("@otherPlayerName", row.otherPlayer);
+                                otherPlayerId = Convert.ToInt32(await sqlcmd.ExecuteScalarAsync(), CultureInfo.CurrentCulture);
+                            }
+                            // Same for the player
+                            await using (var sqlcmd = new SqliteCommand(queryPlayer, connection, (SqliteTransaction)transaction))
+                            {
+                                sqlcmd.Parameters.AddWithValue("@playerName", row.player);
+                                playerId = Convert.ToInt32(await sqlcmd.ExecuteScalarAsync(), CultureInfo.CurrentCulture);
+                            }
+
+                            // Insert new sales/purchases data into their respective tables
+                            await using (var sqlcmd = new SqliteCommand(query, connection, (SqliteTransaction)transaction))
+                            {
+                                sqlcmd.Parameters.AddWithValue("@itemString", row.itemString);
+                                sqlcmd.Parameters.AddWithValue("@itemName", row.itemName);
+                                sqlcmd.Parameters.AddWithValue("@stackSize", row.stackSize);
+                                sqlcmd.Parameters.AddWithValue("@quantity", row.quantity);
+                                sqlcmd.Parameters.AddWithValue("@price", row.price / 10000 * row.quantity);
+                                sqlcmd.Parameters.AddWithValue("@otherPlayerId", otherPlayerId);
+                                sqlcmd.Parameters.AddWithValue("@playerId", playerId);
+                                sqlcmd.Parameters.AddWithValue("@time", row.time);
+                                sqlcmd.Parameters.AddWithValue("@source", row.source);
+                                await sqlcmd.ExecuteNonQueryAsync();
+                            }
+                        }
+                        // Commit
+                        await transaction.CommitAsync();
+                        Log.Information("Successfully Imported data from: " + file);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback on error
+                        await transaction.RollbackAsync();
+                        Log.Error("Error during csv import transaction: " + ex);
+                        ExceptionHandling.ExceptionHandler("DataBaseImportCsvs.cs->ProcessCsvFileAsync->try->transaction", ex);
+                    }
+                });
+                // Archive file, add hash to list, compress file
+                try
+                {
+                    Log.Information("Copying file to archive folder: " + fileToArchive);
+                    File.Copy(file, fileToArchive);
+                    await Task.Run(() => CompressFile(file, compressedFilePath));
+                    Log.Information("Done importing data. Adding hash to archived_csv_hashes.txt");
+                    await File.AppendAllTextAsync(DatabaseMain.dbCsvArchivePath + @"\archived_csv_hashes.txt", hashString + "\n");
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Error finalizing file import: {file}");
+                    Log.Error("Exception: " + ex);
+                    ExceptionHandling.ExceptionHandler("DataBaseImportCsvs.cs->ProcessCsvFileAsync->finally->try->copy to archive||Append hash", ex);
+                }
+            }
+            Log.Information("Going over to next file.");
+            // Release the semaphore object, allowing the next thread to act
+            semaphore.Release();
+        }
+        // Check if hash of file is already stored
+        public static async Task<Tuple<bool, string>> FileInArchiveCheck(string fileToCheck)
+        {
+            string[] storedHashes = await File.ReadAllLinesAsync(DatabaseMain.dbCsvArchivePath + @"\archived_csv_hashes.txt");
+            string hashString = BitConverter.ToString(SHA256.HashData(File.OpenRead(fileToCheck)));
+            Console.WriteLine(hashString);
+            if (storedHashes.Contains(hashString))
+            {
+                Log.Information("File 1 to 1 already archived: " + fileToCheck);
+                Log.Information("Skipping File.");
+                return new Tuple<bool, string>(true , hashString);
+            }
+            else
+            {
+                return new Tuple<bool, string>(false, hashString);
+            }
+        }
+        // Compress method
+        private static async Task CompressFile(string fileToCompress, string compressedFile)
+        {
+            Log.Information("Compressing the file...");
+            await using FileStream originalFileStream = File.OpenRead(fileToCompress);
+            await using FileStream compressedFileStream = File.Create(compressedFile + ".compr");
+            await using var compressor = new GZipStream(compressedFileStream, CompressionMode.Compress);
+            await originalFileStream.CopyToAsync(compressor);
+            Log.Information("File compressed.");
         }
 
         private static async Task ExecuteWithRetryAsync(Func<Task> operation)
@@ -179,7 +236,7 @@ namespace WoWAHDataProject.Database
                 catch (Exception ex)
                 {
                     Log.Error("An error occurred: " + ex);
-                    throw;
+                    ExceptionHandling.ExceptionHandler("DataBaseImportCsvs.cs->ExecuteWithRetryAsync", ex);
                 }
             }
             Log.Error("Failed to complete operation after multiple retries due to deadlocks.");

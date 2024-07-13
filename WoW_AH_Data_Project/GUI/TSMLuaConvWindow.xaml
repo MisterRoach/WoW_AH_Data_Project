@@ -1,0 +1,21 @@
+﻿<Window x:Class="WoWAHDataProject.GUI.TSMLuaConvWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WoWAHDataProject.GUI"
+        mc:Ignorable="d"
+        Title="TSM Lua Data Conversion" Height="450" Width="800">
+    <Grid>
+        <StackPanel Margin="50">
+            <Label>Enter/Choose TSM Path i.E "L:\WoW\World of Warcraft\_classic_\Interface\AddOns\TradeSkillMaster_AppHelper\AppData.lua" :</Label>
+            <TextBox x:Name="TxtbSelectTsmPath"></TextBox>
+            <Button x:Name="BtnSelectTsmPath" Click="BtnSelectTsmPathClick" Margin="10" Height="35" Width="175">Choose TSM AppHelper Folder</Button>
+            <Label>Enter/Choose Output Path(if empty, the path of this file's execution is used):</Label>
+            <TextBox x:Name="TxtbSelectOutputPath"></TextBox>
+            <Button x:Name="BtnSelectOutputPath" Click="BtnSelectOutputPathClick" Margin="10" Height="35" Width="175">Choose Output Path</Button>
+            <Button x:Name="BtnConvertLuaData" Click="BtnConvertLuaDataClick" IsEnabled="False" Margin="10" Height="35" Width="175">Convert Lua Data</Button>
+        </StackPanel>
+        <Image x:Name="bottomLeftImage" HorizontalAlignment="Left" Width="200" Height="200" Margin="22,222,0,16"/>
+    </Grid>
+</Window>
