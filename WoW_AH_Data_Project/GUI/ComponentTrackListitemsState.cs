@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace WoWAHDataProject.GUI
 {
-    public class View : INotifyPropertyChanged
+    public class ComponentTrackListitemsState : INotifyPropertyChanged
     {
         private bool isChecked;
         private string columnName;
@@ -39,7 +34,6 @@ namespace WoWAHDataProject.GUI
             {
                 eh(this, new PropertyChangedEventArgs(propertyName));
             }
-            //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
     }

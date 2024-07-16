@@ -1,12 +1,12 @@
-﻿<Window x:Class="WoWAHDataProject.GUI.ViewDatabaseConfig"
+﻿<Window x:Class="WoWAHDataProject.GUI.Db.WindowAccessDatabase"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WoWAHDataProject.GUI"
+        xmlns:local="clr-namespace:WoWAHDataProject.GUI.Db"
         mc:Ignorable="d"
         Closed="WindowClosed"
-        Title="ViewDatabaseConfig" Height="450" Width="800">
+        Title="WindowAccessDatabase" Height="450" Width="800">
     <Grid>
         <ComboBox x:Name="DatabaseComboBox" Text="Choose Table" IsEditable="True" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="DatabaseComboBoxSelectionChanged" DropDownOpened="DatabaseComboBoxDropDownOpened"/>
         <Button x:Name="BtnSelectTable" Content="Select Table" HorizontalAlignment="Left" Margin="500,40,0,0" VerticalAlignment="Top" Width="120" Click="BtnSelectTable_Click"/>

@@ -6,12 +6,12 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using Forms = System.Windows.Forms;
 
-namespace WoWAHDataProject.GUI
+namespace WoWAHDataProject.GUI.Db
 {
     /// <summary>
     /// Interaction logic for DbTestWindow.xaml
     /// </summary>
-    public partial class ViewDatabaseTableWindow : Window, IDisposable
+    public partial class WindowViewTable : Window, IDisposable
     {
         private static SqliteConnection connection;
         private int dataOffset;
@@ -20,7 +20,7 @@ namespace WoWAHDataProject.GUI
         private readonly List<string> columnSelectionList;
         private readonly DataTable dataTable;
 
-        public ViewDatabaseTableWindow(string tableName, List<string> columnSelectionList, SqliteConnection sqlConnection)
+        public WindowViewTable(string tableName, List<string> columnSelectionList, SqliteConnection sqlConnection)
         {
             InitializeComponent();
             this.Loaded += ViewDatabaseTable_Loaded;

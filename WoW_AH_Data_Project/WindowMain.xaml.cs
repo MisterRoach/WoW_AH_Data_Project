@@ -5,14 +5,15 @@ using System.Windows;
 using WoWAHDataProject.Code;
 using WoWAHDataProject.Database;
 using WoWAHDataProject.GUI;
+using WoWAHDataProject.GUI.Db;
 namespace WoWAHDataProject;
 
 /// <summary>
 /// Window the application opens with
 /// </summary>
-public partial class MainWindow : Window
+public partial class WindowMain : Window
 {
-    public MainWindow()
+    public WindowMain()
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Verbose()
@@ -69,14 +70,14 @@ public partial class MainWindow : Window
 
     private void BtnSelectImportToDatabaseClick(object sender, RoutedEventArgs e)
     {
-        ImportToDatabaseMainWindow importToDatabaseMainWindow = new();
-        importToDatabaseMainWindow.Show();
+        WindowImportToDatabase windowAccessDatabase = new();
+        windowAccessDatabase.Show();
     }
 
-    private async void BtnSelectDataBasesViewConfigClick(object sender, RoutedEventArgs e)
+    private async void BtnSelectDatabaseAccessClick(object sender, RoutedEventArgs e)
     {
-        Window viewDatabaseConfigWindow = await ViewDatabaseConfig.CreateAsync(new SqliteConnection(DatabaseMain.connString));
-        viewDatabaseConfigWindow.Show();
+        Window windowAccessDatabase = await WindowAccessDatabase.CreateAsync(new SqliteConnection(DatabaseMain.connString));
+        windowAccessDatabase.Show();
     }
 
     private void BtnSelectDataBaseTestWindowClick(object sender, RoutedEventArgs e)

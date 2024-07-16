@@ -1,4 +1,4 @@
-﻿namespace WoWAHDataProject.GUI;
+﻿namespace WoWAHDataProject.GUI.Db;
 using Serilog;
 using System.IO;
 using System.Linq;
@@ -8,10 +8,10 @@ using WoWAHDataProject.Database;
 using WoWAHDataProject.Code;
 using WinForms = System.Windows.Forms;
 
-public partial class ImportCsvsToDatabaseWindow : Window
+public partial class WindowImportCsvsToDatabase : Window
 {
     List<string> files = new();
-    public ImportCsvsToDatabaseWindow()
+    public WindowImportCsvsToDatabase()
     {
         InitializeComponent();
         if (Egg.音)

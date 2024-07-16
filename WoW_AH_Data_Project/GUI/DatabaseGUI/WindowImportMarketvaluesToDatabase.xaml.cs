@@ -1,4 +1,4 @@
-﻿namespace WoWAHDataProject.GUI;
+﻿namespace WoWAHDataProject.GUI.Db;
 using Serilog;
 using System.IO;
 using System.Reflection;
@@ -9,10 +9,10 @@ using WinForms = System.Windows.Forms;
 /// <summary>
 /// Window for Lua File Data Import to Database
 /// </summary>
-public partial class ImportMarketValuesToDatabaseWindow : Window
+public partial class WindowImportMarketvaluesToDatabase : Window
 {
     List<string> files = [];
-    public ImportMarketValuesToDatabaseWindow()
+    public WindowImportMarketvaluesToDatabase()
     {
         InitializeComponent();
         if (Egg.音)

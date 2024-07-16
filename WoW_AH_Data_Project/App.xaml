@@ -2,9 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WoWAHDataProject"
-             StartupUri="MainWindow.xaml"
+             StartupUri="WindowMain.xaml"
              Exit="AppExit">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>

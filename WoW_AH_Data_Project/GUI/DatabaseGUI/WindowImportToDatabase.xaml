@@ -1,11 +1,11 @@
-﻿<Window x:Class="WoWAHDataProject.GUI.ImportToDatabaseMainWindow"
+﻿<Window x:Class="WoWAHDataProject.GUI.Db.WindowImportToDatabase"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WoWAHDataProject.GUI"
+        xmlns:local="clr-namespace:WoWAHDataProject.GUI.Db"
         mc:Ignorable="d"
-        Title="ImportToDatabaseMainWindow" Height="200" Width="500">
+        Title="WindowImportToDatabase" Height="215" Width="500">
     <Grid>
         <StackPanel Margin="25">
             <Button x:Name="BtnSelectImportCsvToDatabase" Click="BtnSelectImportCsvToDatabaseClick" Margin="10" Height="35" Width="250">Import CSVs to database</Button>

@@ -69,15 +69,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="GUI\DatabaseGUI\WindowImportMarketvaluesToDatabase.xaml.cs">
+    <Compile Update="GUI\DatabaseGui\ImportMarketValuesToDatabaseWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="WindowMain.xaml">
+    <Page Update="MainWindow.xaml">
       <CustomToolNamespace>testns</CustomToolNamespace>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="GUI\DatabaseGui\NewFolder\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+    </None>
   </ItemGroup>
 
 </Project>
