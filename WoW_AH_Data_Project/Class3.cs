@@ -6,7 +6,7 @@ public class Class1
 	{
         void hallo()
         {
-            Console.WriteLine("Hallo");
+            Console.WriteLine("Hallot");
         }
 	}
 }
