@@ -1,0 +1,24 @@
+﻿<Window x:Class="WoWAHDataProject.GUI.ViewDatabaseTableWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WoWAHDataProject.GUI"
+        mc:Ignorable="d"
+        Title="ViewDatabaseTableWindow" Height="450" Width="800">
+    <Grid>
+        <Menu>
+            <MenuItem Header="File">
+                <MenuItem Header="Open" Click="MenuItem_Click"/>
+                <MenuItem Header="Save" Click="MenuItem_Click"/>
+                <MenuItem Header="Exit" Click="MenuItem_Click"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Copy" Click="MenuItem_Click"/>
+                <MenuItem Header="Paste" Click="MenuItem_Click"/>
+            </MenuItem>
+        </Menu>
+        <DataGrid x:Name="myDataGrid" ContextMenuOpening="myDataGrid_ContextMenuOpening" Margin="0,20,0,0" AlternatingRowBackground="#FFD4D4D4" AlternationCount="2">
+        </DataGrid>
+    </Grid>
+</Window>

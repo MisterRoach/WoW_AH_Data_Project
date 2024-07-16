@@ -1,0 +1,133 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>True</UseWindowsForms>
+    <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>True</Optimize>
+    <WarningLevel>9999</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>9999</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Pic\pic.png" />
+    <None Remove="卵\こんにちは\こんばんは\ge.wav" />
+    <None Remove="卵\失敗\a.wav" />
+    <None Remove="卵\失敗\h.wav" />
+    <None Remove="卵\失敗\hm.wav" />
+    <None Remove="卵\失敗\opp.wav" />
+    <None Remove="卵\失敗\opper.wav" />
+    <None Remove="卵\失敗\ou.wav" />
+    <None Remove="卵\失敗\sr.wav" />
+    <None Remove="卵\失敗\wh.wav" />
+    <None Remove="卵\首尾よく\hwg.wav" />
+    <None Remove="卵\首尾よく\lgtm.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="bin\Debug\net8.0-windows\卵\こんにちは\こんばんは\ge.wav" />
+    <Content Include="bin\Debug\net8.0-windows\卵\失敗\a.wav" />
+    <Content Include="bin\Debug\net8.0-windows\卵\失敗\h.wav" />
+    <Content Include="bin\Debug\net8.0-windows\卵\失敗\hm.wav" />
+    <Content Include="bin\Debug\net8.0-windows\卵\失敗\opp.wav" />
+    <Content Include="bin\Debug\net8.0-windows\卵\失敗\opper.wav" />
+    <Content Include="bin\Debug\net8.0-windows\卵\失敗\ou.wav" />
+    <Content Include="bin\Debug\net8.0-windows\卵\失敗\sr.wav" />
+    <Content Include="bin\Debug\net8.0-windows\卵\失敗\wh.wav" />
+    <Content Include="bin\Debug\net8.0-windows\卵\首尾よく\hwg.wav" />
+    <Content Include="bin\Debug\net8.0-windows\卵\首尾よく\lgtm.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bin\Debug\net8.0-windows\卵\こんにちは\he.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\こんにちは\hel.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\こんにちは\hell.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\こんにちは\ikkntmy.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\こんにちは\iks.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\こんにちは\お早う\ggm.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\こんにちは\お早う\gm.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\こんにちは\こんばんは\gee.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\失敗\eh.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\失敗\er.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\失敗\idua.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\失敗\op.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\中心\miku\えれくとりっく_えんじぇぅ.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\中心\miku\えれくとりっく_えんじぇぅmubo.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\中心\r.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\中心\r2.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\中心\ramen2018_1.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\中心\SD.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\中心\グラボかじかじ慧.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\中心\立ち絵A_170516.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\角\202004_SD_kei.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\角\sd0.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\角\sd1.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\角\sd2.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\角\sd20.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\角\sd20_lie-down.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\角\SD_B.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\芸術プロ生ちゃん\角\SD_C.卵" />
+    <None Include="bin\Debug\net8.0-windows\卵\首尾よく\cp.卵" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="33.0.1" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.7" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.7" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.12.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Roslynator.CodeFixes" Version="4.12.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Roslynator.CSharp" Version="4.12.4" />
+    <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Serilog" Version="4.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="GUI\ImportMarketValuesToDatabaseWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="MainWindow.xaml">
+      <CustomToolNamespace>testns</CustomToolNamespace>
+    </Page>
+  </ItemGroup>
+
+</Project>
