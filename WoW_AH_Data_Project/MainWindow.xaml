@@ -7,12 +7,14 @@
         mc:Ignorable="d"
         Title="WindowMain" Height="450" Width="800">
     <Grid>
-        <StackPanel x:Name="Yoyoyo" Margin="50">
+        <StackPanel x:Name="Yoyoyo" Margin="50,10,50,0" Height="410" VerticalAlignment="Top">
             <Label HorizontalAlignment="Center">Choose what to do</Label>
             <Button x:Name="BtnSelectLuaConversion" Click="BtnSelectLuaConversionClick" Margin="10" Height="35" Width="250">Create Recent and Regular Marketvalue CSVs</Button>
             <Button x:Name="BtnSelectCombineCsvs" Click="BtnSelectCombineCsvsClick"  Margin="10" Height="35" Width="250">Combine Sales and Purchases CSVs</Button>
             <Button x:Name="BtnSelectImportToDatabase" Click="BtnSelectImportToDatabaseClick" Margin="10" Height="35" Width="250">Import data to database</Button>
             <Button x:Name="BtnSelectCreateDB" Click="BtnSelectCreateDBClick" Margin="10" Height="35" Width="250">Create Database</Button>
+            <Button x:Name="BtnSelectDataBasesViewConfig" Click="BtnSelectDataBasesViewConfigClick" Margin="10" Height="35" Width="250">Access Database</Button>
+            <Button x:Name="BtnSelectDataBaseTestWindow" Click="BtnSelectDataBaseTestWindowClick" Margin="10" Height="35" Width="250">Test</Button>
         </StackPanel>
         <Image x:Name="bottomLeftImage" HorizontalAlignment="Left" Width="200" Height="200" Margin="22,225,0,16"/>
         <Image x:Name="centerRightImage" HorizontalAlignment="Left" Width="220" Height="425" Margin="555,4,0,5"/>

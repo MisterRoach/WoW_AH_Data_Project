@@ -1,8 +1,9 @@
-﻿using System.IO;
-using System.Configuration;
-using Serilog;
+﻿using Serilog;
 using System.Collections.Specialized;
-using WinForms = System.Windows.Forms;
+using System.Configuration;
+using System.IO;
+using WoWAHDataProject.Database;
+using Forms = System.Windows.Forms;
 
 namespace WoWAHDataProject.Code
 {
@@ -11,101 +12,109 @@ namespace WoWAHDataProject.Code
         public static void InitConfigCheck()
         {
             NameValueCollection appSettings = ConfigurationManager.AppSettings;
-            Configuration configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            KeyValueConfigurationCollection keyValPairs = configFile.AppSettings.Settings;
-            var appSettingsKeycollection = keyValPairs.AllKeys;
-            string[] wantedKeys = { "baseDirectory", "dbDirectory", "dbFilePath", "notFirstLaunch", "dbArchivePath", "dbCsvArchivePath", "dbLuaArchivePath" };
-            Log.Information($"Configfile: {configFile.FilePath}");
-
+            System.Configuration.Configuration configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            KeyValueConfigurationCollection settings = configFile.AppSettings.Settings;
+            string[] allKeys = settings.AllKeys;
+            string[] keysToSearch =[
+                                    "baseDirectory",
+                                    "dbDirectory",
+                                    "dbFilePath",
+                                    "notFirstLaunch",
+                                    "dbArchivePath",
+                                    "dbCsvArchivePath",
+                                    "dbLuaArchivePath"
+                                   ];
+            Log.Information("Configfile: " + configFile.FilePath);
             // Check if config file has notFirstLaunch entry, check and set config keys if so
             try
             {
-                if (!appSettingsKeycollection.Contains("notFirstLaunch"))
+                if (!allKeys.Contains("notFirstLaunch"))
                 {
-                    CheckConfigKeys(appSettingsKeycollection, wantedKeys, appSettings, keyValPairs, configFile, false);
+                    CheckConfigKeys(allKeys, keysToSearch, appSettings, settings, configFile, false);
                 }
                 else
                 {
                     // If backup exists and not first launch, compare current config with backup and check if BaseDirectory changed
-                    if (File.Exists(configFile.FilePath + ".bak"))
+                    if (!File.Exists(configFile.FilePath + ".bak"))
+                        return;
+                    if (CompareConfigs(configFile.FilePath, configFile.FilePath + ".bak") && AppDomain.CurrentDomain.BaseDirectory == settings["baseDirectory"].Value)
                     {
-                        if (CompareConfigs(configFile.FilePath, configFile.FilePath + ".bak") && AppDomain.CurrentDomain.BaseDirectory == keyValPairs["baseDirectory"].Value)
+                        Log.Information(AppDomain.CurrentDomain.BaseDirectory);
+                        Log.Information("Current .config is the same as the backuped one and we are in the same BaseDirectory as stored in the config.");
+                        Log.Information("Checking if database is available.");
+                        if (!File.Exists(settings["dbFilePath"].Value))
+                            return;
+                        Log.Information("Database found.");
+                    }
+                    else
+                    {
+                        // If current config differs from backup or BaseDirectory changed, check if database is available
+                        Log.Warning("Current config or BaseDirectory differs from the old one.");
+                        Log.Information("Checking if database is available.");
+                        if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "db\\maindatabase.db"))
                         {
-                            Log.Information(AppDomain.CurrentDomain.BaseDirectory);
-                            Log.Information("Current .config is the same as the backuped one and we are in the same BaseDirectory as stored in the config.");
-                            Log.Information("Checking if database is available.");
-                            if (File.Exists(keyValPairs["dbFilePath"].Value))
-                            {
-                                Log.Information("Database found.");
-                            }
+                            Log.Information("Database found, no crucial situation. Updating .config values.");
+                            // Update config values if database is found
+                            CheckConfigKeys(allKeys, keysToSearch, appSettings, settings, configFile, true);
                         }
                         else
                         {
-                            // If current config differs from backup or BaseDirectory changed, check if database is available
-                            Log.Warning("Current config or BaseDirectory differs from the old one.");
-                            Log.Information("Checking if database is available.");
-                            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + @"db\maindatabase.db"))
+                            Log.Warning("Database not found.");
+                            Log.Information("Trying to find it via config and config.bak values.");
+                            // Try to find database via location values in .config and .config.bak values
+                            // offer to copy it if found, could fail depending on permissions
+                            Tuple<string, string> findDatabase = TryToFindDatabase(settings, configFile);
+                            if (findDatabase.Item2 == "true")
                             {
-                                Log.Information("Database found, no crucial situation. Updating .config values.");
-                                // Update config values if database is found
-                                CheckConfigKeys(appSettingsKeycollection, wantedKeys, appSettings, keyValPairs, configFile, true);
+                                Log.Information("Database found in: " + findDatabase.Item1 + ".");
+                                CopyDatabaseDialog(findDatabase.Item1);
                             }
                             else
                             {
-                                Log.Warning("Database not found.");
-                                Log.Information("Trying to find it via config and config.bak values.");
-                                // Try to find database via location values in .config and .config.bak values
-                                // offer to copy it if found, could fail depending on permissions
-                                var dbFindResult = TryToFindDatabase(keyValPairs, configFile);
-                                if (dbFindResult.Item2 == "true")
-                                {
-                                    Log.Information($"Database found in: {dbFindResult.Item1}.");
-                                    CopyDatabaseDialog(dbFindResult.Item1);
-                                }
-                                else
-                                {
-                                    // If no database was found, offer to create a new one
-                                    // could fail aswell depending on permissions
-                                    Log.Error("Database not found in stored possible locations.");
-                                    DialogResult noDbFoundDialogResult = MessageBox.Show("The application was neither able to find a database in the current directory nor in the paths stored in the .config and .config.bak files? Do you wish to create a new one?", "Database not found", MessageBoxButtons.YesNo);
-                                    if (noDbFoundDialogResult == WinForms.DialogResult.Yes)
-                                    {
-                                        Database.DataBaseCreation.CreateDatabase(AppDomain.CurrentDomain.BaseDirectory + @"db\maindatabase.db", AppDomain.CurrentDomain.BaseDirectory + "db", AppDomain.CurrentDomain.BaseDirectory + @"db\db_archive", AppDomain.CurrentDomain.BaseDirectory + @"db\csv_archive", AppDomain.CurrentDomain.BaseDirectory + @"db\lua_archive", $"Data Source={AppDomain.CurrentDomain.BaseDirectory + @"db\maindatabase.db"}");
-                                    }
-                                }
+                                // If no database was found, offer to create a new one
+                                // could fail aswell depending on permissions
+                                Log.Error("Database not found in stored possible locations.");
+                                if (MessageBox.Show("The application was neither able to find a database in the current directory nor in the paths stored in the .config and .config.bak files? Do you wish to create a new one?", "Database not found", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                                    return;
+                                DataBaseCreation.CreateDatabase(AppDomain.CurrentDomain.BaseDirectory + "db\\maindatabase.db", AppDomain.CurrentDomain.BaseDirectory + "db", AppDomain.CurrentDomain.BaseDirectory + "db\\db_archive", AppDomain.CurrentDomain.BaseDirectory + "db\\csv_archive", AppDomain.CurrentDomain.BaseDirectory + "db\\lua_archive", "Data Source=" + AppDomain.CurrentDomain.BaseDirectory + "db\\maindatabase.db");
                             }
                         }
                     }
                 }
             }
-            catch
-            (Exception ex)
+            catch (Exception ex)
             {
-                Log.Error($"Error in ConfigurationCheck.cs: {ex.Message}");
+                Log.Error("Error in ConfigurationCheck.cs: " + ex.Message);
                 ExceptionHandling.ExceptionHandler("ConfigurationCheck.cs->InitConfigCheck", ex);
             }
         }
 
-        public static void CheckConfigKeys(string[] keyCollection, string[] keysToSearch, NameValueCollection appSettings, KeyValueConfigurationCollection keyValPairs, Configuration configFile, bool overwrite)
+        public static void CheckConfigKeys(
+          string[] keyCollection,
+          string[] keysToSearch,
+          NameValueCollection appSettings,
+          KeyValueConfigurationCollection keyValPairs,
+          System.Configuration.Configuration configFile,
+          bool overwrite)
         {
             // Check if wanted values are in config, also check if overwrite is needed, if so overwrite, else if not(possibly firstLaunch) add them
-            foreach (var key in keysToSearch)
+            foreach (string str in keysToSearch)
             {
-                if (keyCollection.Contains(key))
+                if (keyCollection.Contains<string>(str))
                 {
-                    Log.Information($"Key {key} found.");
-                    Log.Information($"Value: {appSettings[key]}");
+                    Log.Information("Key " + str + " found.");
+                    Log.Information("Value: " + appSettings[str]);
                     if (overwrite)
                     {
-                        Log.Information($"Overwrite set to true. Trying to set value for {key}.");
-                        AddUptConfigKey(key, keyValPairs, configFile, true);
+                        Log.Information("Overwrite set to true. Trying to set value for " + str + ".");
+                        AddUptConfigKey(str, keyValPairs, configFile, true);
                     }
                 }
-                else if (!keyCollection.Contains(key))
+                else if (!keyCollection.Contains<string>(str))
                 {
-                    Log.Information($"Key {key} not found.");
-                    Log.Information($"Trying to add key {key} to appSettings.");
-                    AddUptConfigKey(key, keyValPairs, configFile, false);
+                    Log.Information("Key " + str + " not found.");
+                    Log.Information("Trying to add key " + str + " to appSettings.");
+                    AddUptConfigKey(str, keyValPairs, configFile, false);
                 }
                 configFile.Save(ConfigurationSaveMode.Modified);
             }
@@ -139,13 +148,12 @@ namespace WoWAHDataProject.Code
             SaveAndRefresh(configFile);
         }
 
-        public static void SaveAndRefresh(Configuration configFile)
+        public static void SaveAndRefresh(System.Configuration.Configuration configFile)
         {
             configFile.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
             File.Copy(configFile.FilePath, configFile.FilePath + ".bak", true);
         }
-
         // Compare current config with backuped one
         private static bool CompareConfigs(string currentConfig, string bakConfig)
         {
@@ -182,7 +190,7 @@ namespace WoWAHDataProject.Code
         {
             // Tell user we found database somewhere else, offer copy, could fail depending on permissions
             DialogResult oldDbPathResult = MessageBox.Show("Database was found in a different location, do you want to copy it?", "Database found in different location", MessageBoxButtons.YesNo);
-            if (oldDbPathResult == WinForms.DialogResult.OK)
+            if (oldDbPathResult == Forms.DialogResult.OK)
             {
                 try
                 {

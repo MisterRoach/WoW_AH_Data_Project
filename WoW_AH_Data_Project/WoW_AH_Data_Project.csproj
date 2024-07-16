@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows8.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
@@ -48,17 +48,6 @@
     <Content Include="bin\Debug\net8.0-windows\卵\失敗\wh.wav" />
     <Content Include="bin\Debug\net8.0-windows\卵\首尾よく\hwg.wav" />
     <Content Include="bin\Debug\net8.0-windows\卵\首尾よく\lgtm.wav" />
-    <Content Include="卵\こんにちは\こんばんは\ge.wav" />
-    <Content Include="卵\失敗\a.wav" />
-    <Content Include="卵\失敗\h.wav" />
-    <Content Include="卵\失敗\hm.wav" />
-    <Content Include="卵\失敗\opp.wav" />
-    <Content Include="卵\失敗\opper.wav" />
-    <Content Include="卵\失敗\ou.wav" />
-    <Content Include="卵\失敗\sr.wav" />
-    <Content Include="卵\失敗\wh.wav" />
-    <Content Include="卵\首尾よく\hwg.wav" />
-    <Content Include="卵\首尾よく\lgtm.wav" />
   </ItemGroup>
 
   <ItemGroup>
@@ -97,6 +86,8 @@
     <PackageReference Include="CsvHelper" Version="33.0.1" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.7" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.7" />
     <PackageReference Include="Roslynator.Analyzers" Version="4.12.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -119,6 +110,18 @@
     <Compile Update="GUI\ImportMarketValuesToDatabaseWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

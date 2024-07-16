@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Microsoft.Data.Sqlite;
+using Serilog;
 using System.Globalization;
 using System.Windows;
 using WoWAHDataProject.Code;
@@ -70,5 +71,16 @@ public partial class MainWindow : Window
     {
         ImportToDatabaseMainWindow importToDatabaseMainWindow = new();
         importToDatabaseMainWindow.Show();
+    }
+
+    private async void BtnSelectDataBasesViewConfigClick(object sender, RoutedEventArgs e)
+    {
+        Window viewDatabaseConfigWindow = await ViewDatabaseConfig.CreateAsync(new SqliteConnection(DatabaseMain.connString));
+        viewDatabaseConfigWindow.Show();
+    }
+
+    private void BtnSelectDataBaseTestWindowClick(object sender, RoutedEventArgs e)
+    {
+
     }
 }

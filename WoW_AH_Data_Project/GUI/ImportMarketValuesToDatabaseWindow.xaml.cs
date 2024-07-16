@@ -31,7 +31,7 @@ public partial class ImportMarketValuesToDatabaseWindow : Window
         WinForms.DialogResult result = dialog.ShowDialog();
         if (result == WinForms.DialogResult.OK)
         {
-            if (!File.Exists(dialog.SelectedPath + "\\AppData.lua"))
+            if (!Directory.EnumerateFiles(dialog.SelectedPath, "*AppData*.lua").Any())
             {
                 DialogResult errResult = WinForms.MessageBox.Show("Could not find AppData.lua", "Error", MessageBoxButtons.OK);
                 if (errResult == WinForms.DialogResult.OK)

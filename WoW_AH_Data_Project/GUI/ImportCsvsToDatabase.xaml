@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WoWAHDataProject.GUI"
         mc:Ignorable="d"
-        Title="Import Csv To Database" Height="275" Width="650">
+        Title="Import Csv To Database" Height="300" Width="650">
     <Grid>
         <StackPanel Margin="50">
         <Label>Choose path of sales and puchases csv files :</Label>
