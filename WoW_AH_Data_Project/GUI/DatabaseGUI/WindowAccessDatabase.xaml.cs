@@ -58,13 +58,8 @@ public partial class WindowAccessDatabase : Window
             Log.Error("Failed to close database connection.", ex);
         }
     }
-    public void ShowLoadingIndicator(bool show)
-    {
-        loadingIndicator.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
-    }
     private async void BtnSelectTable_Click(object sender, RoutedEventArgs e)
     {
-        ShowLoadingIndicator(true);
         try
         {
             List<string> columnSelectionList = new List<string>();
@@ -81,9 +76,9 @@ public partial class WindowAccessDatabase : Window
             windowViewTable.Show();
             await windowViewTable.LoadDataAsync();
         }
-        finally
+        catch (Exception ex)
         {
-            ShowLoadingIndicator(false);
+            Log.Error("Failed to open table view.", ex);
         }
     }
     private void DatabaseComboBoxDropDownOpened(object sender, EventArgs e)

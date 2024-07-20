@@ -1,7 +1,7 @@
-﻿using Microsoft.Data.Sqlite;
-using Serilog;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
+using Microsoft.Data.Sqlite;
+using Serilog;
 using WoWAHDataProject.Code;
 using WoWAHDataProject.Database;
 using WoWAHDataProject.GUI;
@@ -11,19 +11,29 @@ namespace WoWAHDataProject;
 /// <summary>
 /// Window the application opens with
 /// </summary>
-public partial class WindowMain : Window
+public partial class MainWindow : Window
 {
-    public WindowMain()
+    public MainWindow()
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Verbose()
             .WriteTo.Console(formatProvider: CultureInfo.CurrentCulture)
             .WriteTo.File("logs/main_log_.txt", formatProvider: CultureInfo.CurrentCulture, rollingInterval: RollingInterval.Day)
-            .WriteTo.File("logs/error_log_.txt", restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error,formatProvider: CultureInfo.CurrentCulture, rollingInterval: RollingInterval.Day)
+            .WriteTo.File("logs/error_log_.txt", restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error, formatProvider: CultureInfo.CurrentCulture, rollingInterval: RollingInterval.Day)
             .CreateLogger();
         Log.Information($"Timestamp for current log session: {DateTime.Now}");
+
+
         InitializeComponent();
 
+
+
+        //var win = new SystemColorss();
+        //win.Show();
+        //win.Getcols(null, null);
+        // A helper method that will register all classes that derive off IViewFor 
+        // into our dependency injection container. ReactiveUI uses Splat for it's 
+        // dependency injection by default, but you can override this if you like.
         try
         {
             Egg.プロ生ちゃんNumber();
@@ -52,6 +62,8 @@ public partial class WindowMain : Window
             ExceptionHandling.ExceptionHandler("MainWindow->Tried InitConfigCheck", ex);
         }
     }
+
+
     private void BtnSelectLuaConversionClick(object sender, RoutedEventArgs e)
     {
         TSMLuaConvWindow tSMLuaConvWindow = new();
@@ -82,6 +94,5 @@ public partial class WindowMain : Window
 
     private void BtnSelectDataBaseTestWindowClick(object sender, RoutedEventArgs e)
     {
-
     }
 }

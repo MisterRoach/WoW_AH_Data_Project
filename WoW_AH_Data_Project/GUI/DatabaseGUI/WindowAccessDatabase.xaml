@@ -8,9 +8,9 @@
         Closed="WindowClosed"
         Title="WindowAccessDatabase" Height="450" Width="800">
     <Grid>
-        <ComboBox x:Name="DatabaseComboBox" Text="Choose Table" IsEditable="True" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="DatabaseComboBoxSelectionChanged" DropDownOpened="DatabaseComboBoxDropDownOpened"/>
-        <Button x:Name="BtnSelectTable" Content="Select Table" HorizontalAlignment="Left" Margin="500,40,0,0" VerticalAlignment="Top" Width="120" Click="BtnSelectTable_Click"/>
-        <ProgressBar x:Name="loadingIndicator" Height="20" IsIndeterminate="True" Visibility="Collapsed" Margin="500,65,180,349" />
+        <ComboBox x:Name="DatabaseComboBox" Text="Choose Table" IsEditable="True" IsReadOnly="True" HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="DatabaseComboBoxSelectionChanged" DropDownOpened="DatabaseComboBoxDropDownOpened"/>
+        <Button x:Name="BtnSelectTable" Content="Select Table" HorizontalAlignment="Left" Margin="500,40,0,0" VerticalAlignment="Top" Width="120" Click="BtnSelectTable_Click">
+        </Button>
         <ListView x:Name="ListViewTable" Margin="5,40,550,5" Visibility="Hidden">
             <ListView.View>
                 <GridView>
@@ -28,7 +28,6 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <!-- Add more columns as needed -->
                 </GridView>
             </ListView.View>
         </ListView>
