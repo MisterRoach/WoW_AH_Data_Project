@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /WoW_AH_Data_Project/Test.cs
+/WoW_AH_Data_Project/.vshistory/WoWAHDataProject.csproj

@@ -1,32 +1,29 @@
 ﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Serilog;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using Forms = System.Windows.Forms;
-namespace WoWAHDataProject.GUI;
+namespace WoWAHDataProject.GUI.DatabaseGUI;
 
 /// <summary>
 /// Interaction logic for ViewDatabaseConfig.xaml
 /// </summary>
-public partial class ViewDatabaseConfig : Window
+public partial class WindowAccessDatabase : Window
 {
     private static SqliteConnection connection;
-    private ObservableCollection<View> viewCollection = new ObservableCollection<View>();
-    private ViewDatabaseConfig(SqliteConnection sqliteConnection)
+    private ObservableCollection<ComponentTrackListitemsState> viewCollection = new ObservableCollection<ComponentTrackListitemsState>();
+    private WindowAccessDatabase(SqliteConnection sqliteConnection)
     {
         InitializeComponent();
         connection = sqliteConnection;
         this.Closed += (sender, e) => WindowClosed(sender, e);
     }
 
-    public static async Task<ViewDatabaseConfig> CreateAsync(SqliteConnection connection)
+    public static async Task<WindowAccessDatabase> CreateAsync(SqliteConnection connection)
     {
-        ViewDatabaseConfig window = new ViewDatabaseConfig(connection);
+        WindowAccessDatabase window = new WindowAccessDatabase(connection);
         await InitializeConnectionAsync();
         return window;
     }
@@ -61,18 +58,13 @@ public partial class ViewDatabaseConfig : Window
             Log.Error("Failed to close database connection.", ex);
         }
     }
-    public void ShowLoadingIndicator(bool show)
-    {
-        loadingIndicator.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
-    }
     private async void BtnSelectTable_Click(object sender, RoutedEventArgs e)
     {
-        ShowLoadingIndicator(true);
         try
         {
             List<string> columnSelectionList = new List<string>();
             var content = ListViewTable.Items.SourceCollection;
-            foreach (var entry in content.Cast<View>().ToList())
+            foreach (var entry in content.Cast<ComponentTrackListitemsState>().ToList())
             {
                 if (entry.IsChecked)
                 {
@@ -80,13 +72,13 @@ public partial class ViewDatabaseConfig : Window
                 }
             }
 
-            ViewDatabaseTableWindow viewDatabaseTable = new ViewDatabaseTableWindow(DatabaseComboBox.SelectedItem.ToString(), columnSelectionList, connection);
-            viewDatabaseTable.Show();
-            await viewDatabaseTable.LoadDataAsync();
+            GUI.DatabaseGUI.WindowViewTable windowViewTable = new GUI.DatabaseGUI.WindowViewTable(DatabaseComboBox.SelectedItem.ToString(), columnSelectionList, connection);
+            windowViewTable.Show();
+            await windowViewTable.LoadDataAsync();
         }
-        finally
+        catch (Exception ex)
         {
-            ShowLoadingIndicator(false);
+            Log.Error("Failed to open table view.", ex);
         }
     }
     private void DatabaseComboBoxDropDownOpened(object sender, EventArgs e)
@@ -118,7 +110,7 @@ public partial class ViewDatabaseConfig : Window
         while (reader.Read())
         {
             Log.Information(reader.GetString(0));
-            viewCollection.Add(new View { IsChecked = false, ColumnName = reader.GetString(0) });
+            viewCollection.Add(new ComponentTrackListitemsState { IsChecked = false, ColumnName = reader.GetString(0) });
         }
         ListViewTable.ItemsSource = viewCollection;
         ResizeGridViewColumn(GridViewColumnColumns);

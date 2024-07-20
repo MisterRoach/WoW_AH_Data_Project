@@ -19,7 +19,7 @@ namespace WoWAHDataProject.Database
                 try
                 {
                     Console.WriteLine("try");
-                    optionsBuilder.UseSqlite($"Data Source={DatabaseMain.dbFilePath};");
+                    //optionsBuilder.UseSqlite($"Data Source={DatabaseMain.dbFilePath};");
                 }
                 catch (Exception e)
                 {

@@ -1,9 +1,12 @@
 ﻿using System.IO;
 using System.Media;
+using System.Net.Cache;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Serilog;
+using Windows.Media.Core;
 namespace WoWAHDataProject.Code
 {
     static class Egg
@@ -26,7 +29,7 @@ namespace WoWAHDataProject.Code
         {
             // かわいい = "Cute"
             int かわいい = 無作為.Next(0,100);
-            if (かわいい >= 95)
+            if (かわいい >= 0)
             {
                 // Indicator that we enable sound
                 音 = true;

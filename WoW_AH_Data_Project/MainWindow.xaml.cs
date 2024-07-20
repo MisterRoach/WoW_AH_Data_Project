@@ -1,10 +1,11 @@
-﻿using Microsoft.Data.Sqlite;
-using Serilog;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
+using Microsoft.Data.Sqlite;
+using Serilog;
 using WoWAHDataProject.Code;
 using WoWAHDataProject.Database;
 using WoWAHDataProject.GUI;
+using WoWAHDataProject.GUI.DatabaseGUI;
 namespace WoWAHDataProject;
 
 /// <summary>
@@ -18,11 +19,21 @@ public partial class MainWindow : Window
             .MinimumLevel.Verbose()
             .WriteTo.Console(formatProvider: CultureInfo.CurrentCulture)
             .WriteTo.File("logs/main_log_.txt", formatProvider: CultureInfo.CurrentCulture, rollingInterval: RollingInterval.Day)
-            .WriteTo.File("logs/error_log_.txt", restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error,formatProvider: CultureInfo.CurrentCulture, rollingInterval: RollingInterval.Day)
+            .WriteTo.File("logs/error_log_.txt", restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error, formatProvider: CultureInfo.CurrentCulture, rollingInterval: RollingInterval.Day)
             .CreateLogger();
         Log.Information($"Timestamp for current log session: {DateTime.Now}");
+
+
         InitializeComponent();
 
+
+
+        //var win = new SystemColorss();
+        //win.Show();
+        //win.Getcols(null, null);
+        // A helper method that will register all classes that derive off IViewFor 
+        // into our dependency injection container. ReactiveUI uses Splat for it's 
+        // dependency injection by default, but you can override this if you like.
         try
         {
             Egg.プロ生ちゃんNumber();
@@ -51,6 +62,8 @@ public partial class MainWindow : Window
             ExceptionHandling.ExceptionHandler("MainWindow->Tried InitConfigCheck", ex);
         }
     }
+
+
     private void BtnSelectLuaConversionClick(object sender, RoutedEventArgs e)
     {
         TSMLuaConvWindow tSMLuaConvWindow = new();
@@ -69,18 +82,17 @@ public partial class MainWindow : Window
 
     private void BtnSelectImportToDatabaseClick(object sender, RoutedEventArgs e)
     {
-        ImportToDatabaseMainWindow importToDatabaseMainWindow = new();
-        importToDatabaseMainWindow.Show();
+        WindowImportToDatabase windowAccessDatabase = new();
+        windowAccessDatabase.Show();
     }
 
-    private async void BtnSelectDataBasesViewConfigClick(object sender, RoutedEventArgs e)
+    private async void BtnSelectDatabaseAccessClick(object sender, RoutedEventArgs e)
     {
-        Window viewDatabaseConfigWindow = await ViewDatabaseConfig.CreateAsync(new SqliteConnection(DatabaseMain.connString));
-        viewDatabaseConfigWindow.Show();
+        Window windowAccessDatabase = await WindowAccessDatabase.CreateAsync(new SqliteConnection(DatabaseMain.connString));
+        windowAccessDatabase.Show();
     }
 
     private void BtnSelectDataBaseTestWindowClick(object sender, RoutedEventArgs e)
     {
-
     }
 }
