@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using WoWAHDataProject.Code;
 
-namespace WoWAHDataProject.GUI.Db;
+namespace WoWAHDataProject.GUI.DatabaseGUI;
 
 /// <summary>
 /// Interaction logic for ImportToDatabaseMainWindow.xaml

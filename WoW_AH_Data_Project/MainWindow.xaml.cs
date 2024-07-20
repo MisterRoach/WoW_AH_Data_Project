@@ -5,7 +5,7 @@ using Serilog;
 using WoWAHDataProject.Code;
 using WoWAHDataProject.Database;
 using WoWAHDataProject.GUI;
-using WoWAHDataProject.GUI.Db;
+using WoWAHDataProject.GUI.DatabaseGUI;
 namespace WoWAHDataProject;
 
 /// <summary>

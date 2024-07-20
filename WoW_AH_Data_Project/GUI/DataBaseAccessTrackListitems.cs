@@ -2,7 +2,7 @@
 
 namespace WoWAHDataProject.GUI;
 
-public class DataBaseAccessTrackListitems : INotifyPropertyChanged
+public class ComponentTrackListitemsState : INotifyPropertyChanged
 {
     private bool isChecked;
     private string columnName;

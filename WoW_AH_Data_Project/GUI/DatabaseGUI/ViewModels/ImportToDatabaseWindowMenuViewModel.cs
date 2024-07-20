@@ -1,43 +1,36 @@
 ﻿using System.Globalization;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Serilog;
 using Application = System.Windows.Application;
 
-namespace WoWAHDataProject.GUI.MainWindowGUI.ViewModels;
+namespace WoWAHDataProject.GUI.DatabaseGUI.ViewModels;
 
-internal class MainWindowMenuViewModel
+internal class ImportToDatabaseWindowMenuViewModel
 {
     //Our Source List for Menu Items
-    public List<MainWindowMenuItemsData> MenuList =>
+    public List<ImportToDatabaseWindowMenuItemsData> MenuList =>
     [
                 //MainMenu without SubMenu Button 
-                new MainWindowMenuItemsData(){ MenuText="Start", SubMenuList=null},
+                new ImportToDatabaseWindowMenuItemsData(){ MenuText="Start", SubMenuList=null},
 
                 //MainMenu Button
-                new MainWindowMenuItemsData(){ MenuText="Database"
-
-                //SubMenu Button
-                , SubMenuList=[
-                new MainWindowSubMenuItemsData(){ SubMenuText="Create Database" },
-                new MainWindowSubMenuItemsData(){ SubMenuText="Access Database" },
-                ]},
+                new ImportToDatabaseWindowMenuItemsData(){ MenuText="Import Data", SubMenuList=null},
 
                 //MainMenu without SubMenu Button
-                new MainWindowMenuItemsData(){ MenuText="Settings", SubMenuList=null}
+                new ImportToDatabaseWindowMenuItemsData(){ MenuText="Settings", SubMenuList=null}
             ];
 }
 
-public class MainWindowMenuItemsData
+public class ImportToDatabaseWindowMenuItemsData
 {
     public string MenuText { get; set; }
-    public List<MainWindowSubMenuItemsData> SubMenuList { get; set; }
+    public List<ImportToDatabaseWindowSubMenuItemsData> SubMenuList { get; set; }
 
     //To Add click event to our Buttons we will use ICommand here to switch pages when specific button is clicked
-    public MainWindowMenuItemsData()
+    public ImportToDatabaseWindowMenuItemsData()
     {
-        Command = new MainWindowCommandViewModel(Execute);
+        Command = new ImportToDatabaseWindowCommandViewModel(Execute);
     }
 
     public ICommand Command { get; }
@@ -66,21 +59,21 @@ public class MainWindowMenuItemsData
         //lets see how... ;)
         foreach (Window window in Application.Current.Windows)
         {
-            if (window.GetType() == typeof(MainWindow))
+            if (window.GetType() == typeof(ImportToDatabaseWindow))
             {
-                (window as MainWindow).MainWindowFrame.Navigate(new Uri(string.Format(CultureInfo.CurrentCulture, "{0}{1}{2}", "GUI/MainWindowGUI/Pages/", Menu, ".xaml"), UriKind.RelativeOrAbsolute));
+                (window as ImportToDatabaseWindow).MainWindowFrame.Navigate(new Uri(string.Format(CultureInfo.CurrentCulture, "{0}{1}{2}", "GUI/DatabaseGUI/Pages/", Menu, ".xaml"), UriKind.RelativeOrAbsolute));
             }
         }
     }
 }
-public class MainWindowSubMenuItemsData
+public class ImportToDatabaseWindowSubMenuItemsData
 {
     public string SubMenuText { get; set; }
 
     //To Add click event to our Buttons we will use ICommand here to switch pages when specific button is clicked
-    public MainWindowSubMenuItemsData()
+    public ImportToDatabaseWindowSubMenuItemsData()
     {
-        SubMenuCommand = new MainWindowCommandViewModel(Execute);
+        SubMenuCommand = new ImportToDatabaseWindowCommandViewModel(Execute);
     }
 
     public ICommand SubMenuCommand { get; }
@@ -95,7 +88,7 @@ public class MainWindowSubMenuItemsData
         }
         else if (!string.IsNullOrEmpty(SubMenuItem))
         {
-            Log.Information("In smt: else if !: " + SubMenuItem);
+            Log.Information("In smt: else if !");
             NavigateToPage(SubMenuItem);
         }
     }
@@ -106,9 +99,9 @@ public class MainWindowSubMenuItemsData
         //lets see how... ;)
         foreach (Window window in Application.Current.Windows)
         {
-            if (window.GetType() == typeof(MainWindow))
+            if (window.GetType() == typeof(ImportToDatabaseWindow))
             {
-                (window as MainWindow).MainWindowFrame.Navigate(new Uri(string.Format(CultureInfo.CurrentCulture, "{0}{1}{2}", "GUI/MainWindowGUI/Pages/", Menu, ".xaml"), UriKind.RelativeOrAbsolute));
+                (window as ImportToDatabaseWindow).MainWindowFrame.Navigate(new Uri(string.Format(CultureInfo.CurrentCulture, "{0}{1}{2}", "GUI/DatabaseGUI/Pages/", Menu, ".xaml"), UriKind.RelativeOrAbsolute));
             }
         }
     }

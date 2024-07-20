@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WoWAHDataProject.GUI.MainWindowGUI.Pages"
+      xmlns:gui="clr-namespace:WoWAHDataProject.GUI"
       mc:Ignorable="d" 
       Title="Database"
       Height="Auto" MinHeight="450">
@@ -11,10 +12,7 @@
     <Grid>
         <Grid>
             <Border Margin="10"
-                    BorderThickness="0" 
-                    BorderBrush="#1c1f22" 
-                    Background="#272B2F" 
-                    CornerRadius="20"
+                    Style="{StaticResource btnBorderStyle}"
                     HorizontalAlignment="Center" 
                     VerticalAlignment="Top"
                     Padding="8 5 8 5">
@@ -24,18 +22,18 @@
                 </TextBlock>
             </Border>
             <Button x:Name="CreateDatabaseBtn"
-                    Content="Create Database"
-                    Click="CreateDatabaseBtnClick"
-                    Background="#CACFD4"
-                    BorderBrush="#1c1f22"
-                    Width="100"
-                    Height="40"
-                    Margin="0 55 0 0"
-                    VerticalAlignment="Top"/>
+                    Click="CreateDatabaseBtn_Click"
+                    Style="{StaticResource btnStyle}"
+                    Width="175"
+                    Height="175"
+                    Margin="0 75 0 0"
+                    VerticalAlignment="Top">
+                <Button.Content>
+                    <TextBlock Style="{StaticResource txtBlockStyle}">Create Database</TextBlock>
+                </Button.Content>
+            </Button>
             <Border Margin="350 -40 5 45"
-                    BorderThickness="0" 
-                    BorderBrush="#1c1f22" 
-                    Background="#272B2F" 
+                    Style="{StaticResource btnBorderStyle}"
                     CornerRadius="20"
                     Padding="8 5 8 5"
                     VerticalAlignment="Bottom">

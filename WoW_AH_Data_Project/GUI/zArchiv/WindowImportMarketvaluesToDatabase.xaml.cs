@@ -1,4 +1,4 @@
-﻿namespace WoWAHDataProject.GUI.Db;
+﻿namespace WoWAHDataProject.GUI.DatabaseGUI;
 using Serilog;
 using System.IO;
 using System.Reflection;

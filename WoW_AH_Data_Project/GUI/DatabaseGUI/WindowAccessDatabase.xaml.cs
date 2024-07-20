@@ -5,7 +5,7 @@ using System.Data;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-namespace WoWAHDataProject.GUI.Db;
+namespace WoWAHDataProject.GUI.DatabaseGUI;
 
 /// <summary>
 /// Interaction logic for ViewDatabaseConfig.xaml
@@ -72,7 +72,7 @@ public partial class WindowAccessDatabase : Window
                 }
             }
 
-            GUI.Db.WindowViewTable windowViewTable = new GUI.Db.WindowViewTable(DatabaseComboBox.SelectedItem.ToString(), columnSelectionList, connection);
+            GUI.DatabaseGUI.WindowViewTable windowViewTable = new GUI.DatabaseGUI.WindowViewTable(DatabaseComboBox.SelectedItem.ToString(), columnSelectionList, connection);
             windowViewTable.Show();
             await windowViewTable.LoadDataAsync();
         }

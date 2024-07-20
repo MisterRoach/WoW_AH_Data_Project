@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using Forms = System.Windows.Forms;
 
-namespace WoWAHDataProject.GUI.Db
+namespace WoWAHDataProject.GUI.DatabaseGUI
 {
     /// <summary>
     /// Interaction logic for DbTestWindow.xaml
