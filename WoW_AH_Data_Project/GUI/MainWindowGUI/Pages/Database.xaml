@@ -4,50 +4,65 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WoWAHDataProject.GUI.MainWindowGUI.Pages"
-      xmlns:gui="clr-namespace:WoWAHDataProject.GUI"
       mc:Ignorable="d" 
-      Title="Database"
-      Height="Auto" MinHeight="450">
+      Height="Auto" MinHeight="450" Width="Auto" MinWidth="690.2"
+      Title="Database">
 
-    <Grid>
-        <Grid>
-            <Border Margin="10"
-                    Style="{StaticResource btnBorderStyle}"
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Top"
-                    Padding="8 5 8 5">
-                <TextBlock Name="textBlock" Foreground="White" FontWeight="Medium" FontFamily="Bold" Margin="1" Width="Auto" TextAlignment="Left" HorizontalAlignment="Center">
-                    Here you can create the database that's used to store all those auctionhouse data.<LineBreak/>
-                    Per default it's created in "db" folder within the apps folder.
-                </TextBlock>
-            </Border>
-            <Button x:Name="CreateDatabaseBtn"
-                    Click="CreateDatabaseBtn_Click"
+    <Grid Grid.IsSharedSizeScope="True" MinWidth="690.2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition SharedSizeGroup="A" Width="345.1"/>
+            <ColumnDefinition SharedSizeGroup="A"/>
+        </Grid.ColumnDefinitions>
+            
+
+        
+        <Grid Grid.Column="0" HorizontalAlignment="Center">
+            <Button x:Name="GoToDatabaseCreation"
+                    Click="GoToDatabaseCreationClick"
                     Style="{StaticResource btnStyle}"
-                    Width="175"
-                    Height="175"
-                    Margin="0 75 0 0"
-                    VerticalAlignment="Top">
+                    Width="250"
+                    Height="250"
+                    Margin="0 175 0 0"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Left">
                 <Button.Content>
-                    <TextBlock Style="{StaticResource txtBlockStyle}">Create Database</TextBlock>
+                    <TextBlock Style="{StaticResource txtBlockStyle}">Go to database creation</TextBlock>
                 </Button.Content>
             </Button>
-            <Border Margin="350 -40 5 45"
-                    Style="{StaticResource btnBorderStyle}"
-                    CornerRadius="20"
-                    Padding="8 5 8 5"
-                    VerticalAlignment="Bottom">
-                <TextBlock Foreground="White" FontWeight="Medium" FontFamily="Bold">
-                    Currently the batabase collects:<LineBreak/>
-                    - Sales data<LineBreak/>
-                    - Purchase data<LineBreak/>
-                    - Marketvalues<LineBreak/>
-                    <LineBreak/>
-                    It also extracts from those data into separate tables:<LineBreak/>
-                    - Playernames<LineBreak/>
-                    - Items(currently ItemNames needs to get webscrapped)
-                </TextBlock>
-            </Border>
         </Grid>
+        
+        
+        
+        <Border Grid.ColumnSpan="2"
+                Margin="10"
+                Style="{StaticResource btnBorderStyle}"
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Top"
+                Padding="8 5 8 5">
+            <TextBlock Name="textBlock" Foreground="White" FontWeight="Medium" FontFamily="Roboto" FontSize="16" Margin="1" Width="Auto" TextAlignment="Left" HorizontalAlignment="Center">
+                 In the database menu you can create the database that's used to store<LineBreak/> all those auctionhouse data.
+                <LineBreak/><LineBreak/>
+                You can also access the database to import your data or to view it in certain ways.
+                <LineBreak/><LineBreak/>
+                In future versions it shall also be possible to configure some settings.
+            </TextBlock>
+        </Border>
+        
+        
+        
+        <Grid Grid.Column="1" HorizontalAlignment="Center">
+            <Button x:Name="GoToDatabaseAccess"
+                    Click="GoToDatabaseAccessClick"
+                    Style="{StaticResource btnStyle}"
+                    Width="250"
+                    Height="250"
+                    Margin="0 175 0 0"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right">
+                <Button.Content>
+                    <TextBlock Style="{StaticResource txtBlockStyle}">Go to database access</TextBlock>
+                </Button.Content>
+            </Button>
+        </Grid> 
     </Grid>
 </Page>

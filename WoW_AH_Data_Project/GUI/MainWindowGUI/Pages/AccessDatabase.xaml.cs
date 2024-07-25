@@ -1,6 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using WoWAHDataProject.GUI.DatabaseGUI;
+using Microsoft.Data.Sqlite;
+using WoWAHDataProject.Database;
+using WoWAHDataProject.GUI.DatabaseGUI.AccessDatabaseGUI;
+using WoWAHDataProject.GUI.DatabaseGUI.ImportToDatabaseGUI;
 
 namespace WoWAHDataProject.GUI.MainWindowGUI.Pages;
 /// <summary>
@@ -18,9 +21,9 @@ public partial class AccessDatabase : Page
         dbImportWindow.Show();
     }
 
-    private void BtnAccessDatabase_Click(object sender, RoutedEventArgs e)
+    private async void BtnAccessDatabase_Click(object sender, RoutedEventArgs e)
     {
-       // AccessDatabaseWindow accesDbWindow = new AccessDatabaseWindow();
-       // accesDbWindow.Show();
+        AccessDatabaseWindow accessDatabaseWindow = new();
+        accessDatabaseWindow.Show();
     }
 }

@@ -26,13 +26,13 @@ public static class ExceptionHandling
             $"\nActualMethodThatThrew: {exception.TargetSite}" +
             $"\n---------------END OF EXCEPTION---------------" +
             $"\n----------------------------------------------");
-        var excScanResults = ExceptionScanner.ExceptionScan(exception);
+        Tuple<string, string> excScanResults = ExceptionScanner.ExceptionScan(exception);
         Log.Error($"ExceptionScanner Result: {excScanResults}");
         WinForms.Application.SetHighDpiMode(HighDpiMode.SystemAware);
         WinForms.Application.EnableVisualStyles();
         WinForms.Application.SetCompatibleTextRenderingDefault(true);
         // Cutting contents so they fit in the upcoming dialog
-        var regex = new Regex(@".{75}");
+        Regex regex = new(@".{75}");
         string exInnerEx = exception.InnerException == null ? "No inner exception" : regex.Replace(exception.InnerException.ToString(), "$&" + Environment.NewLine);
         string exStackTrace = exception.StackTrace == null ? "No StackTrace" : regex.Replace(exception.StackTrace, "$&" + Environment.NewLine);
         string exDescription = regex.Replace(excScanResults.Item2, "$&" + Environment.NewLine);

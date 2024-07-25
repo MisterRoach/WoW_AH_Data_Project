@@ -1,8 +1,11 @@
-﻿using System.Windows.Controls;
-using WoWAHDataProject.Database;
+﻿using System.Windows;
+using System.Windows.Controls;
+using WoWAHDataProject.GUI.MainWindowGUI.ViewModels;
 
 namespace WoWAHDataProject.GUI.MainWindowGUI.Pages;
-
+/// <summary>
+/// Interaction logic for Database.xaml
+/// </summary>
 public partial class Database : Page
 {
     public Database()
@@ -10,8 +13,14 @@ public partial class Database : Page
         InitializeComponent();
     }
 
-    private void CreateDatabaseBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+    private void GoToDatabaseCreationClick(object sender, RoutedEventArgs e)
     {
-        DatabaseMain.DataBaseMain();
+        MainWindowSubMenuItemsData.NavigateToPage("CreateDatabase");
+
+    }
+
+    private void GoToDatabaseAccessClick(object sender, RoutedEventArgs e)
+    {
+        MainWindowSubMenuItemsData.NavigateToPage("AccessDatabase");
     }
 }

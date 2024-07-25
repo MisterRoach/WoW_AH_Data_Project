@@ -23,17 +23,8 @@ public partial class MainWindow : Window
             .CreateLogger();
         Log.Information($"Timestamp for current log session: {DateTime.Now}");
 
-
         InitializeComponent();
 
-
-
-        //var win = new SystemColorss();
-        //win.Show();
-        //win.Getcols(null, null);
-        // A helper method that will register all classes that derive off IViewFor 
-        // into our dependency injection container. ReactiveUI uses Splat for it's 
-        // dependency injection by default, but you can override this if you like.
         try
         {
             Egg.プロ生ちゃんNumber();
@@ -88,11 +79,16 @@ public partial class MainWindow : Window
 
     private async void BtnSelectDatabaseAccessClick(object sender, RoutedEventArgs e)
     {
-        Window windowAccessDatabase = await WindowAccessDatabase.CreateAsync(new SqliteConnection(DatabaseMain.connString));
-        windowAccessDatabase.Show();
+        //Window windowAccessDatabase = await WindowAccessDatabase.CreateAsync(new SqliteConnection(DatabaseMain.connString));
+        //windowAccessDatabase.Show();
     }
 
     private void BtnSelectDataBaseTestWindowClick(object sender, RoutedEventArgs e)
     {
+    }
+
+    private void MainWindowFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+    {
+        Log.Information("DataContextChanged");
     }
 }

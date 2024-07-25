@@ -1,13 +1,11 @@
-﻿namespace WoWAHDataProject.GUI.DatabaseGUI;
-using Serilog;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Reflection;
 using System.Windows;
-using WoWAHDataProject.Database;
+using Serilog;
 using WoWAHDataProject.Code;
 using WinForms = System.Windows.Forms;
 
+namespace WoWAHDataProject.GUI.DatabaseGUI;
 public partial class WindowImportCsvsToDatabase : Window
 {
     List<string> files = new();
@@ -61,6 +59,6 @@ public partial class WindowImportCsvsToDatabase : Window
 
     private async void BtnImportCsvsToDbClick(object sender, RoutedEventArgs e)
     {
-        await Task.Run(() => DatabaseImportCsvs.DatabaseImportCsvFiles(files, $@"Data Source={AppDomain.CurrentDomain.BaseDirectory}db\maindatabase.db"));
+        //await Task.Run(() => DatabaseImportCsvs.DatabaseImportCsvFiles(files, $@"Data Source={AppDomain.CurrentDomain.BaseDirectory}db\maindatabase.db"));
     }
 }

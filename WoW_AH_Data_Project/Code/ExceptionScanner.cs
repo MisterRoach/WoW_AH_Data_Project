@@ -1,7 +1,4 @@
 ﻿namespace WoWAHDataProject.Code;
-using System;
-
-
 public static class ExceptionScanner
 {
     public static Tuple<string, string> ExceptionScan(Exception exception)

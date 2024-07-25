@@ -59,5 +59,21 @@ namespace WoWAHDataProject.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;Style x:Key=&quot;menuItemStyleRes&quot; TargetType=&quot;{x:Type MenuItem}&quot;&gt;
+        ///        &lt;Setter Property=&quot;Background&quot; Value=&quot;{DynamicResource brushPalettePrimaryOrange}&quot;/&gt;
+        ///        &lt;Setter Property=&quot;Foreground&quot; Value=&quot;White&quot;/&gt;
+        ///        &lt;Setter Property=&quot;FontFamily&quot; Value=&quot;{DynamicResource appMainFont}&quot;/&gt;
+        ///        &lt;Setter Property=&quot;FontSize&quot; Value=&quot;14&quot;/&gt;
+        ///        &lt;Setter Property=&quot;FontWeight&quot; Value=&quot;{DynamicResource defaultWeight}&quot;/&gt;
+        ///        &lt;Setter Property=&quot;BorderThickness&quot; Value=&quot;0 0 1 1&quot;/&gt;
+        ///        &lt;Setter Property=&quot;B [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Serilog;
 using Application = System.Windows.Application;
@@ -10,7 +9,7 @@ namespace WoWAHDataProject.GUI.MainWindowGUI.ViewModels;
 internal class MainWindowMenuViewModel
 {
     //Our Source List for Menu Items
-    public List<MainWindowMenuItemsData> MenuList =>
+    public static List<MainWindowMenuItemsData> MenuList =>
     [
                 //MainMenu without SubMenu Button 
                 new MainWindowMenuItemsData(){ MenuText="Start", SubMenuList=null},
@@ -45,12 +44,12 @@ public class MainWindowMenuItemsData
     private void Execute()
     {
         //our logic comes here
-        string MT = MenuText.Replace(" ", string.Empty);
+        string MainMenuItem = MenuText.Replace(" ", string.Empty);
         try
         {
-            if (!string.IsNullOrEmpty(MT))
+            if (!string.IsNullOrEmpty(MainMenuItem))
             {
-                NavigateToPage(MT);
+                NavigateToPage(MainMenuItem);
             }
         }
         catch (Exception ex)
@@ -62,8 +61,7 @@ public class MainWindowMenuItemsData
 
     private static void NavigateToPage(string Menu)
     {
-        //We will search for our Main Window in open windows and then will access the frame inside it to set the navigation to desired page..
-        //lets see how... ;)
+        // Look for MainWindow, then navigate to menu page
         foreach (Window window in Application.Current.Windows)
         {
             if (window.GetType() == typeof(MainWindow))
@@ -85,25 +83,26 @@ public class MainWindowSubMenuItemsData
 
     public ICommand SubMenuCommand { get; }
 
-    private async void Execute()
+    private void Execute()
     {
         //our logic comes here
         string SubMenuItem = SubMenuText.Replace(" ", string.Empty).ToLowerInvariant();
-
-        if (SubMenuItem.Contains("createdatabase") || SubMenuItem.Contains("importtodatabase"))
+        try
         {
+            if (!string.IsNullOrEmpty(SubMenuItem))
+            {
+                NavigateToPage(SubMenuItem);
+            }
         }
-        else if (!string.IsNullOrEmpty(SubMenuItem))
+        catch (Exception ex)
         {
-            Log.Information("In smt: else if !: " + SubMenuItem);
-            NavigateToPage(SubMenuItem);
+            Log.Information("Awww it failed", ex);
         }
     }
 
-    private static void NavigateToPage(string Menu)
+    public static void NavigateToPage(string Menu)
     {
-        //We will search for our Main Window in open windows and then will access the frame inside it to set the navigation to desired page..
-        //lets see how... ;)
+        // Look for MainWindow, then navigate to sub menu page
         foreach (Window window in Application.Current.Windows)
         {
             if (window.GetType() == typeof(MainWindow))
