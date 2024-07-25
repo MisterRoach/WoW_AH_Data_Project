@@ -2,10 +2,12 @@
 using Serilog;
 using System.IO;
 using WoWAHDataProject.Code;
+
 namespace WoWAHDataProject.Database;
+
 public static class DataBaseCreation
 {
-    public static void CreateDatabase(string dbFilePath, string dbDirectory, string dbArchivePath, string dbCsvArchivePath, string dbLuaArchivePath,string connString)
+    public static async Task CreateDatabase(string dbFilePath, string dbDirectory, string dbArchivePath, string dbCsvArchivePath, string dbLuaArchivePath, string connString)
     {
         try
         {
@@ -16,22 +18,22 @@ public static class DataBaseCreation
             Directory.CreateDirectory(dbCsvArchivePath);
             Log.Information("Created csv archive directory.");
             Log.Information("Trying to create csv archive files folder.");
-            Directory.CreateDirectory(dbCsvArchivePath+@"\files");
+            Directory.CreateDirectory(dbCsvArchivePath + @"\files");
             Log.Information("Created csv archive files folder.");
             Log.Information("Trying to create csv archive compressed files folder.");
             Directory.CreateDirectory(dbCsvArchivePath + @"\files\compressed");
             Log.Information("Created csv archive files folder.");
             Log.Information("Trying to create file to store archived csv hashes.");
-            File.Create(dbCsvArchivePath+@"\archived_csv_hashes.txt");
+            File.Create(dbCsvArchivePath + @"\archived_csv_hashes.txt");
             Log.Information("Created file to store archived csv hashes.");
             Log.Information("Trying to create lua archive files folder.");
-            Directory.CreateDirectory(dbLuaArchivePath+ @"\files");
+            Directory.CreateDirectory(dbLuaArchivePath + @"\files");
             Log.Information("Created lua archive files folder.");
             Log.Information("Trying to create lua archive compressed files folder.");
             Directory.CreateDirectory(dbLuaArchivePath + @"\files\compressed");
             Log.Information("Created lua archive files folder.");
             Log.Information("Trying to create file to store archived csv hashes.");
-            File.Create(dbLuaArchivePath+ @"\archived_lua_hashes.txt");
+            File.Create(dbLuaArchivePath + @"\archived_lua_hashes.txt");
             Log.Information("Created file to store archived lua hashes.");
             Log.Information("Trying to create database archive directory.");
             Directory.CreateDirectory(dbArchivePath);
@@ -39,28 +41,35 @@ public static class DataBaseCreation
             Log.Information("Trying to create database file.");
             using (File.Create(dbFilePath)) { }
             Log.Information($"Created database file: {dbFilePath}");
-            using var connection = new SqliteConnection(connString);
+            using SqliteConnection connection = new(connString);
             Log.Information("Trying to open database connection.");
-            connection.Open();
+            await connection.OpenAsync();
             Log.Information("Opened database connection.");
-            CreateTables(connection);
+            await CreateTables(connection);
             Log.Information("Database created.");
             Log.Information("Closing database connection.");
-            connection.Close();
+            await connection.CloseAsync();
+            await connection.DisposeAsync();
         }
         catch (Exception ex)
         {
             Log.Error("Error creating database: {Message}", ex.Message);
             ExceptionHandling.ExceptionHandler("DataBaseCreation->CreateDatabase", ex);
         }
+        finally
+        {
+            SqliteConnection.ClearAllPools();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
     }
 
-    public static void CreateTables(SqliteConnection connection)
+    public static async Task CreateTables(SqliteConnection connection)
     {
         Log.Information("Trying to create tables.");
         try
         {
-            using var command = connection.CreateCommand();
+            using SqliteCommand command = connection.CreateCommand();
             command.CommandText =
             @"
                 CREATE TABLE IF NOT EXISTS
@@ -106,7 +115,11 @@ public static class DataBaseCreation
                     playerName TEXT UNIQUE
                 );
                 CREATE TABLE IF NOT EXISTS
-                regularMarketValues (
+                regularRealmMarketValues (
+                    itemId INTEGER PRIMARY KEY UNIQUE
+                );
+                CREATE TABLE IF NOT EXISTS
+                regionMarketValues (
                     itemId INTEGER PRIMARY KEY UNIQUE
                 );
                 CREATE TABLE IF NOT EXISTS
@@ -119,23 +132,27 @@ public static class DataBaseCreation
                 CREATE INDEX idx_purchases_otherPlayerId ON purchases(otherPlayerId);
                 CREATE INDEX idx_sales_playerId ON sales(playerId);
                 CREATE INDEX idx_purchases_playerId ON purchases(playerId);
-                CREATE INDEX idx_regularMarketValues_itemId ON regularMarketValues(itemId);
+                CREATE INDEX idx_regularRealmMarketValues_itemId ON regularRealmMarketValues(itemId);
+                CREATE INDEX idx_regionMarketValues_itemId ON regionMarketValues(itemId);
                 CREATE INDEX idx_recentMarketValues_itemId ON recentMarketValues(itemId);
+                PRAGMA journal_mode = wal;
                 ";
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
 
-            bool tableName = TableExists(connection, "sales");
-            Log.Information($"sales table exists: {tableName}");
-            tableName = TableExists(connection, "purchases");
-            Log.Information($"purchases table exists: {tableName}");
-            tableName = TableExists(connection, "otherPlayer");
-            Log.Information($"otherPlayer table exists: {tableName}");
-            tableName = TableExists(connection, "player");
-            Log.Information($"player table exists: {tableName}");
-            tableName = TableExists(connection, "regularMarketValues");
-            Log.Information($"regularMarketValues table exists: {tableName}");
-            tableName = TableExists(connection, "recentMarketValues");
-            Log.Information($"recentMarketValues table exists: {tableName}");
+            bool tableExists = TableExists(connection, "sales");
+            Log.Information($"sales table exists: {tableExists}");
+            tableExists = TableExists(connection, "purchases");
+            Log.Information($"purchases table exists: {tableExists}");
+            tableExists = TableExists(connection, "otherPlayer");
+            Log.Information($"otherPlayer table exists: {tableExists}");
+            tableExists = TableExists(connection, "player");
+            Log.Information($"player table exists: {tableExists}");
+            tableExists = TableExists(connection, "regularRealmMarketValues");
+            Log.Information($"regularRealmMarketValues table exists: {tableExists}");
+            tableExists = TableExists(connection, "regionMarketValues");
+            Log.Information($"regionMarketValues table exists: {tableExists}");
+            tableExists = TableExists(connection, "recentMarketValues");
+            Log.Information($"recentMarketValues table exists: {tableExists}");
         }
         catch (Exception ex)
         {
@@ -143,11 +160,12 @@ public static class DataBaseCreation
             ExceptionHandling.ExceptionHandler("DataBaseCreation->CreateTables", ex);
         }
     }
+
     public static bool TableExists(SqliteConnection connection, string tableName)
     {
-        using var command = connection.CreateCommand();
+        using SqliteCommand command = connection.CreateCommand();
         command.CommandText = $"SELECT name FROM sqlite_master WHERE type='table' AND name='{tableName}';";
-        var result = command.ExecuteScalar();
+        object result = command.ExecuteScalar();
         return result != null;
     }
 }

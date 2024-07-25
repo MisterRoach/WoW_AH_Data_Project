@@ -24,6 +24,5 @@ public partial class App : System.Windows.Application
             Egg.封印Egg(Egg.音ミク失敗[0].Item1, Egg.音ミク失敗[0].Item2);
         }
         Log.Information("Application is exiting");
-        
     }
 }

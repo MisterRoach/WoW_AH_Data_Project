@@ -4,7 +4,7 @@ using System.IO;
 
 namespace WoWAHDataProject.Database;
 
-static class DatabaseMain
+internal static class DatabaseMain
 {
     public static string dbDirectory = ConfigurationManager.AppSettings["dbDirectory"];
     public static string dbFilePath = ConfigurationManager.AppSettings["dbFilePath"];
@@ -24,7 +24,7 @@ static class DatabaseMain
         {
             Log.Warning("Database file not found.");
             Log.Information("Trying to create database.");
-            DataBaseCreation.CreateDatabase(dbFilePath, dbDirectory, dbArchivePath, dbCsvArchivePath, dbLuaArchivePath, connString);
+            Task.Run(() => DataBaseCreation.CreateDatabase(dbFilePath, dbDirectory, dbArchivePath, dbCsvArchivePath, dbLuaArchivePath, connString).Dispose());
         }
         else
         {

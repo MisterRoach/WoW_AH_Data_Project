@@ -1,11 +1,10 @@
-﻿namespace WoWAHDataProject.GUI.DatabaseGUI;
-using Serilog;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using System.Windows;
-using WoWAHDataProject.Database;
+using Serilog;
 using WoWAHDataProject.Code;
 using WinForms = System.Windows.Forms;
+namespace WoWAHDataProject.GUI.DatabaseGUI;
 /// <summary>
 /// Window for Lua File Data Import to Database
 /// </summary>
@@ -54,6 +53,6 @@ public partial class WindowImportMarketvaluesToDatabase : Window
 
     private async void BtnStartMarketValuesImportToDbClick(object sender, RoutedEventArgs e)
     {
-        await Task.Run(() => DatabaseImportMarketValues.DatabaseImportLuaMarketValues(files, $@"Data Source={AppDomain.CurrentDomain.BaseDirectory}db\maindatabase.db"));
+        //await Task.Run(() => DatabaseImportMarketValues.DatabaseImportLuaMarketValues(files, $@"Data Source={AppDomain.CurrentDomain.BaseDirectory}db\maindatabase.db"));
     }
 }

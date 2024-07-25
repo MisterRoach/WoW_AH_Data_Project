@@ -1,0 +1,57 @@
+﻿<Window x:Class="WoWAHDataProject.GUI.DatabaseGUI.ImportToDatabaseGUI.ImportToDatabaseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WoWAHDataProject.GUI.DatabaseGUI.ImportToDatabaseGUI"
+        xmlns:Controls="clr-namespace:WoWAHDataProject.GUI.DatabaseGUI.ImportToDatabaseGUI.Controls"
+        mc:Ignorable="d"
+        Title="ImportToDatabaseWindow" Height="500" Width="850"
+        WindowStartupLocation="CenterScreen">
+    <Window.Background>
+        <!--<ImageBrush ImageSource="C:\Users\renes\source\repos\WoWAHDataProjectAzure\WoW_AH_Data_Project\NewFolder\img24.jpg"/>-->
+        <SolidColorBrush Color="#181a1c"/>
+    </Window.Background>
+    
+        <Border>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="109.8"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+        
+            <!--Navi on the left side-->
+                <Controls:ImportToDatabaseWindowMenuControl SubMenuPadding="0,0,0,0" Grid.Column="0">
+                    <Controls:ImportToDatabaseWindowMenuControl.Background>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" Opacity="1">
+                            <GradientStop Color="#FCA311" Offset="0.2"/>
+                            <GradientStop Color="#ffc04d" Offset="1.0"/>
+                        </LinearGradientBrush>
+                    </Controls:ImportToDatabaseWindowMenuControl.Background>
+                </Controls:ImportToDatabaseWindowMenuControl>
+            <!--Frame on the right side-->
+                <Frame x:Name="MainWindowFrame" Grid.Column="1" NavigationUIVisibility="Hidden">
+                </Frame>
+                        <!--<ListView x:Name="ListViewTable" Margin="5,40,550,5" Visibility="Collapsed">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn x:Name="GridViewColumnColumns" Header="Columns">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ColumnName}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn x:Name="GridViewColumnCheckBox" Header="Include">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox x:Name="includeColumnCheckBox" IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>-->
+            </Grid>
+        </Border>
+</Window>

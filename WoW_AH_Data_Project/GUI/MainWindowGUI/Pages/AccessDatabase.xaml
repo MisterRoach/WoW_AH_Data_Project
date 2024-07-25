@@ -29,12 +29,14 @@
             </Border>
             <Button x:Name="BtnImportToDatabaseBtn"
                     Style="{StaticResource btnStyle}"
-                Click="BtnImportToDatabase_Click"
-                BorderBrush="#1c1f2240"
-                BorderThickness="5"
-                Width="250"
-                Height="200"
-                HorizontalAlignment="Center">
+                    Click="BtnImportToDatabase_Click"
+                    BorderBrush="#1c1f2240"
+                    BorderThickness="5"
+                    Width="250"
+                    Height="250"
+                    Margin="0 175 0 0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top">
                 <Button.Content>
                     <TextBlock Text="Import To Database" FontSize="20" FontFamily="Arial" FontWeight="Bold" Foreground="White"/>
                 </Button.Content>
@@ -54,12 +56,14 @@
                 </TextBlock>
             </Border>
             <Button x:Name="BtnAccessDatabase"
-                Click="BtnAccessDatabase_Click"
-                Style="{StaticResource btnStyle}"
-                BorderThickness="5"
-                Width="250"
-                Height="200"
-                HorizontalAlignment="Center">
+                    Click="BtnAccessDatabase_Click"
+                    Style="{StaticResource btnStyle}"
+                    BorderThickness="5"
+                    Width="250"
+                    Height="250"
+                    Margin="0 175 0 0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="25 25 25 25"/>

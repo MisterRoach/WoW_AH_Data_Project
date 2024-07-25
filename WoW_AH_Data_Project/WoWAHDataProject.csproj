@@ -28,6 +28,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Resource Include="**\GUI\StylesAndResources\Roboto-Black.tff" />
+    <Resource Include="**\GUI\StylesAndResources\Roboto-Bold.tff" />
+    <Resource Include="**\GUI\StylesAndResources\Roboto-Light.tff" />
+    <Resource Include="**\GUI\StylesAndResources\Roboto-Medium.tff" />
+    <Resource Include="**\GUI\StylesAndResources\Roboto-Regular.tff" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <Compile Remove="bin\**" />
     <EmbeddedResource Remove="bin\**" />
     <None Remove="bin\**" />
@@ -82,7 +90,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="GUI\DatabaseGUI\Controls\ImportToDatabaseWindowMenuControl.xaml.cs">
+    <Compile Update="GUI\DatabaseGUI\AccessDatabaseGUI\Controls\AccessDatabaseWindowMenuControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DatabaseGUI\AccessDatabaseGUI\Pages\AccessDatabaseStartPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DatabaseGUI\ImportToDatabaseGUI\Controls\ImportToDatabaseWindowMenuControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">

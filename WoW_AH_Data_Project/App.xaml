@@ -7,7 +7,39 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="GUI/MainWindowGUI/Styles.xaml"/>
+                <ResourceDictionary Source="GUI/StylesAndResources/Styles.xaml"/>
+                
+                <!--<ResourceDictionary>
+                    <Style x:Key="menuItemStyle" TargetType="{x:Type MenuItem}">
+                        <Setter Property="Background" Value="{DynamicResource brushPalettePrimaryOrange}"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontFamily" Value="{DynamicResource appMainFont}"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="{DynamicResource defaultWeight}"/>
+                        <Setter Property="BorderThickness" Value="0 0 1 1"/>
+                        <Setter Property="BorderBrush" Value="#272B2F"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource brushPaletteOrangeHighlightning}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+    
+                    <Color x:Key="colorPaletteBlackWindowBackground">#181a1c</Color>
+                    <Color x:Key="colorPaletteBorderBackgroundGrey">#272B2F</Color>
+                    <Color x:Key="colorPalettePrimaryOrange">#FCA311</Color>
+                    <Color x:Key="colorPaletteFfaFivehundredOrange">#FFA500</Color>
+                    <Color x:Key="colorPaletteOrangeHighlightning">#ffdb99</Color>
+    
+                    <Brush x:Key="brushPaletteBlackWindowBackground">#181a1c</Brush>
+                    <Brush x:Key="brushPaletteBorderBackgroundGrey">#272B2F</Brush>
+                    <Brush x:Key="brushPalettePrimaryOrange">#FCA311</Brush>
+                    <Brush x:Key="brushPaletteFfaFivehundredOrange">#FFA500</Brush>
+                    <Brush x:Key="brushPaletteOrangeHighlightning">#ffdb99</Brush>
+
+                    <FontFamily x:Key="appMainFont">Roboto</FontFamily>
+                    <FontWeight x:Key="defaultWeight">Bold</FontWeight>-->
+                <!--</ResourceDictionary>-->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -10,18 +10,18 @@
         WindowStartupLocation="CenterScreen">
     <Window.Background>
         <!--<ImageBrush ImageSource="C:\Users\renes\source\repos\WoWAHDataProjectAzure\WoW_AH_Data_Project\NewFolder\img24.jpg"/>-->
-        <SolidColorBrush Color="#181a1c"/>
+        <SolidColorBrush Color="{StaticResource colorPaletteBlackWindowBackground}"/>
     </Window.Background>
     
         <Border>
-            <Grid>
+            <Grid Name="rootGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" MinWidth="109.8"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
         
             <!--Navi on the left side-->
-                <Controls:MainWindowMenuControl HasIcon="True" SubMenuPadding="0,0,0,0">
+                <Controls:MainWindowMenuControl AutomationProperties.Name="MainWindowMenu" x:Name="MainWindowMenu" SubMenuPadding="0,0,0,0">
                     <Controls:MainWindowMenuControl.Background>
                         <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" Opacity="1">
                             <GradientStop Color="#FCA311" Offset="0.2"/>
@@ -30,7 +30,7 @@
                     </Controls:MainWindowMenuControl.Background>
                 </Controls:MainWindowMenuControl>
             <!--Frame on the right side-->
-                <Frame x:Name="MainWindowFrame" Grid.Column="1" NavigationUIVisibility="Hidden">
+                <Frame x:Name="MainWindowFrame" Grid.Column="1" NavigationUIVisibility="Hidden" Navigated="MainWindowFrame_Navigated">
                 </Frame>
             </Grid>
         </Border>
