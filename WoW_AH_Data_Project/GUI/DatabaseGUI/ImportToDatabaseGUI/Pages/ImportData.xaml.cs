@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 using Serilog;
@@ -13,12 +14,14 @@ namespace WoWAHDataProject.GUI.DatabaseGUI.ImportToDatabaseGUI.Pages;
 
 public partial class ImportData : Page, INotifyPropertyChanged
 {
-    private readonly List<string> files = [];
+    private List<string> files = [];
+
     public ImportData()
     {
         InitializeComponent();
         DataContext = this;
     }
+
     private void BtnBrowseSalesNPurchases_Click(object sender, RoutedEventArgs e)
     {
         files.Clear();
@@ -54,6 +57,21 @@ public partial class ImportData : Page, INotifyPropertyChanged
                     Log.Information($"Found file to import: {file}");
                     files.Add(file);
                 }
+                files = [.. files.OrderByDescending(File.GetLastWriteTime)];
+                List<string> hashes = [];
+                Array.ForEach(files.ToArray(), dpath =>
+                {
+                    string hash = BitConverter.ToString(SHA256.HashData(File.OpenRead(dpath)));
+                    if (!hashes.Contains(hash))
+                    {
+                        Console.WriteLine("Hash not in hashes list");
+                        hashes.Add(hash);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Hash in hashes list");
+                    }
+                });
                 ProgressionBar.Maximum = files.Count;
                 ProgressionBar.Value = 0;
                 ProgressionBar.Visibility = Visibility.Visible;
@@ -139,7 +157,9 @@ public partial class ImportData : Page, INotifyPropertyChanged
             BtnStartLuaFileImport.Visibility = Visibility.Collapsed;
         }
     }
+
     private string _BtnImportText;
+
     public string BtnImportText
     {
         get => _BtnImportText;
@@ -149,7 +169,9 @@ public partial class ImportData : Page, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
     private decimal _ProgressValue;
+
     public decimal ProgressValue
     {
         get => _ProgressValue;
@@ -159,7 +181,9 @@ public partial class ImportData : Page, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
     private string _ProgressionText;
+
     public string ProgressionText
     {
         get => _ProgressionText;
@@ -169,7 +193,9 @@ public partial class ImportData : Page, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
     public event PropertyChangedEventHandler PropertyChanged;
+
     protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChangedEventHandler handler = this.PropertyChanged;

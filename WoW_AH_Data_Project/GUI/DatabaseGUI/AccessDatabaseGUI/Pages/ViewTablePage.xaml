@@ -62,7 +62,7 @@
                 <MenuItem Header="_MAYBE" />
             </MenuItem>
         </Menu>
-        <DataGrid x:Name="myDataGrid" Grid.Row="1" ContextMenuOpening="MyDataGrid_ContextMenuOpening" Margin="0,0,0,0" AlternatingRowBackground="#FFD4D4D4" AlternationCount="2">
+        <DataGrid EnableRowVirtualization="True" EnableColumnVirtualization="True" x:Name="myDataGrid" Grid.Row="1" ContextMenuOpening="MyDataGrid_ContextMenuOpening" Margin="0,0,0,0" AlternatingRowBackground="#FFD4D4D4" AlternationCount="2">
         </DataGrid>
     </Grid>
 </Page>

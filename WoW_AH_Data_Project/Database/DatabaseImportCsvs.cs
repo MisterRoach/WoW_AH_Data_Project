@@ -39,6 +39,7 @@ internal static class DatabaseImportCsvs
     public static async Task<bool> DatabaseImportCsvFiles(IEnumerable<string> csvFiles, string connString, ImportData importData)
     {
         bool exceptionOccured = false;
+        csvFiles = [.. csvFiles.OrderByDescending(File.GetLastWriteTime)];
         amountOfFiles = csvFiles.Count();
         importData.ProgressionText = $"Processed files: {importData.ProgressValue}/{amountOfFiles}";
         SqliteConnection connection = new(connString);
@@ -128,6 +129,8 @@ internal static class DatabaseImportCsvs
                                 SELECT playerId FROM player WHERE playerName = @playerName;";
             // Read csv file to list
             List<AllEntries> rows = ReadEntriesFromCSV(file).ToList();
+            List<string> playerNames = rows.Select(r => r.Player).Distinct().ToList();
+            
             await ExecuteWithRetryAsync(async () =>
             {
                 await using System.Data.Common.DbTransaction transaction = await connection.BeginTransactionAsync();
@@ -205,7 +208,6 @@ internal static class DatabaseImportCsvs
     {
         string[] storedHashes = await File.ReadAllLinesAsync(DatabaseMain.dbCsvArchivePath + @"\archived_csv_hashes.txt");
         string hashString = BitConverter.ToString(SHA256.HashData(File.OpenRead(fileToCheck)));
-        Console.WriteLine(hashString);
         if (storedHashes.Contains(hashString))
         {
             Log.Information("File 1 to 1 already archived: " + fileToCheck);

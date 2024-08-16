@@ -115,14 +115,6 @@ public static class DataBaseCreation
                     playerName TEXT UNIQUE
                 );
                 CREATE TABLE IF NOT EXISTS
-                regularRealmMarketValues (
-                    itemId INTEGER PRIMARY KEY UNIQUE
-                );
-                CREATE TABLE IF NOT EXISTS
-                regionMarketValues (
-                    itemId INTEGER PRIMARY KEY UNIQUE
-                );
-                CREATE TABLE IF NOT EXISTS
                 recentMarketValues (
                     itemId INTEGER PRIMARY KEY,
                     UNIQUE (itemId)
@@ -132,8 +124,6 @@ public static class DataBaseCreation
                 CREATE INDEX idx_purchases_otherPlayerId ON purchases(otherPlayerId);
                 CREATE INDEX idx_sales_playerId ON sales(playerId);
                 CREATE INDEX idx_purchases_playerId ON purchases(playerId);
-                CREATE INDEX idx_regularRealmMarketValues_itemId ON regularRealmMarketValues(itemId);
-                CREATE INDEX idx_regionMarketValues_itemId ON regionMarketValues(itemId);
                 CREATE INDEX idx_recentMarketValues_itemId ON recentMarketValues(itemId);
                 PRAGMA journal_mode = wal;
                 ";
@@ -147,10 +137,6 @@ public static class DataBaseCreation
             Log.Information($"otherPlayer table exists: {tableExists}");
             tableExists = TableExists(connection, "player");
             Log.Information($"player table exists: {tableExists}");
-            tableExists = TableExists(connection, "regularRealmMarketValues");
-            Log.Information($"regularRealmMarketValues table exists: {tableExists}");
-            tableExists = TableExists(connection, "regionMarketValues");
-            Log.Information($"regionMarketValues table exists: {tableExists}");
             tableExists = TableExists(connection, "recentMarketValues");
             Log.Information($"recentMarketValues table exists: {tableExists}");
         }
