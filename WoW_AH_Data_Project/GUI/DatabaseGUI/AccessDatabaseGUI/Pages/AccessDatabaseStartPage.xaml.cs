@@ -16,19 +16,24 @@ public partial class AccessDatabaseStartPage : Page
     private readonly ObservableCollection<ComponentTrackListitemsState> viewCollection = [];
     private static readonly SqliteConnection connection = new(DatabaseMain.connString);
     internal static string SelectedTable;
-    internal static List<string> columnSelectionList = new();
+    internal static string SelectedRowAmount;
+    internal static List<string> columnSelectionList = [];
     public AccessDatabaseStartPage()
     {
         InitializeComponent();
+        ComboBoxAmountOfRowsToDisplay.Items.Add("All");
+        ComboBoxAmountOfRowsToDisplay.Items.Add("1000");
+        ComboBoxAmountOfRowsToDisplay.Items.Add("500");
+        ComboBoxAmountOfRowsToDisplay.Items.Add("250");
         connection.Open();
     }
 
-    private async void BtnSelectTable_Click(object sender, RoutedEventArgs e)
+    private void BtnSelectTable_Click(object sender, RoutedEventArgs e)
     {
         try
         {
-            var content = ListViewTable.Items.SourceCollection;
-            foreach (var entry in content.Cast<ComponentTrackListitemsState>().ToList())
+            System.Collections.IEnumerable content = ListViewTable.Items.SourceCollection;
+            foreach (ComponentTrackListitemsState entry in content.Cast<ComponentTrackListitemsState>().ToList())
             {
                 if (entry.IsChecked)
                 {
@@ -59,7 +64,7 @@ public partial class AccessDatabaseStartPage : Page
     {
         GetTableColumns(DatabaseComboBox.SelectedItem.ToString());
         SelectedTable = DatabaseComboBox.SelectedItem.ToString();
-        if (ListViewTable.Visibility == Visibility.Hidden)
+        if (ListViewTable.Visibility == Visibility.Collapsed)
         {
             ListViewTable.Visibility = Visibility.Visible;
         }
@@ -72,7 +77,7 @@ public partial class AccessDatabaseStartPage : Page
         while (reader.Read())
         {
             Log.Information(reader.GetString(0));
-            viewCollection.Add(new ComponentTrackListitemsState { IsChecked = false, ColumnName = reader.GetString(0) });
+            viewCollection.Add(new ComponentTrackListitemsState { IsChecked = true, ColumnName = reader.GetString(0) });
         }
         ListViewTable.ItemsSource = viewCollection;
         ResizeGridViewColumn(GridViewColumnColumns);
@@ -99,5 +104,83 @@ public partial class AccessDatabaseStartPage : Page
     private void CheckBoxIncludeInResultUnchecked(object sender, RoutedEventArgs e)
     {
 
+    }
+
+    private void ComboBoxAmountOfRowsToDisplay_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        SelectedRowAmount = ComboBoxAmountOfRowsToDisplay.SelectedItem.ToString();
+    }
+
+    private void ComboBoxAmountOfRowsToDisplay_DropDownOpened(object sender, EventArgs e)
+    {
+
+    }
+
+    private void ComboBoxToGroupByColumn_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
+
+    private void ComboBoxToGroupByColumn_DropDownOpened(object sender, EventArgs e)
+    {
+        foreach (ComponentTrackListitemsState item in viewCollection)
+        {
+            if (item.IsChecked)
+            {
+                ComboBoxToGroupByColumn.Items.Add(item.ColumnName);
+            }
+        }
+        ComboBoxToGroupByColumn.Items.Refresh();
+    }
+
+    private void ComboBoxToGroupByFurther_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
+
+    private void ComboBoxToGroupByFurther_DropDownOpened(object sender, EventArgs e)
+    {
+        foreach (ComponentTrackListitemsState item in viewCollection)
+        {
+            if (item.IsChecked)
+            {
+                ComboBoxToGroupByFurther.Items.Add(item.ColumnName);
+            }
+        }
+        ComboBoxToGroupByFurther.Items.Refresh();
+    }
+
+    private void ComboBoxToOrderBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
+
+    private void ComboBoxToOrderBy_DropDownOpened(object sender, EventArgs e)
+    {
+        foreach (ComponentTrackListitemsState item in viewCollection)
+        {
+            if (item.IsChecked)
+            {
+                ComboBoxToOrderBy.Items.Add(item.ColumnName);
+            }
+        }
+        ComboBoxToOrderBy.Items.Refresh();
+    }
+
+    private void ComboBoxToOrderByFurther_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
+
+    private void ComboBoxToOrderByFurther_DropDownOpened(object sender, EventArgs e)
+    {
+        foreach (ComponentTrackListitemsState item in viewCollection)
+        {
+            if (item.IsChecked)
+            {
+                ComboBoxToOrderByFurther.Items.Add(item.ColumnName);
+            }
+        }
+        ComboBoxToOrderByFurther.Items.Refresh();
     }
 }

@@ -16,7 +16,6 @@ public static class CombineSalesPurchasesCsvs
         var culture = CultureInfo.InvariantCulture;
         try
         {
-            File.ReadAllText("\\gwhgot");
             Log.Information($"Original System's CultureInfo Setting is {culture}.");
             // Test double to see how the systems CultureInfo value affects the separator
             const double dotTestNum = 100.0001;

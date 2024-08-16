@@ -29,7 +29,7 @@ public static partial class DatabaseImportMarketValues
 
     public static async Task<bool> DatabaseImportLuaMarketValues(IEnumerable<string> luaFiles, ImportData importData)
     {
-        bool exceptionOccured = false;
+        bool exceptionOccurred = false;
         amountOfFiles = luaFiles.Count();
         importData.ProgressionText = $"Processed files: {importData.ProgressValue}/{amountOfFiles}";
 
@@ -42,7 +42,7 @@ public static partial class DatabaseImportMarketValues
         {
             Log.Error("Error during processing lua files: " + ex);
             ExceptionHandling.ExceptionHandler("DataBaseImportMarketValues.cs->DatabaseImportMarketValues->try->WhenAll", ex);
-            exceptionOccured = true;
+            exceptionOccurred = true;
         }
         finally
         {
@@ -51,7 +51,7 @@ public static partial class DatabaseImportMarketValues
         SqliteConnection.ClearAllPools();
         GC.Collect();
         GC.WaitForPendingFinalizers();
-        return exceptionOccured;
+        return exceptionOccurred;
     }
 
     public static async Task ProcessLuaFileAsync(string file, ImportData importData)
@@ -75,31 +75,27 @@ public static partial class DatabaseImportMarketValues
                 await Parallel.ForEachAsync(luaLines, async (line, _) =>
                 {
                     using SqliteConnection connection = new(DatabaseMain.connString);
+                    await connection.OpenAsync(_);
+                    if (line.Contains("\"marketValue\"") && (line.Contains("Horde") || line.Contains("\"marketValue\"") && line.Contains("Alliance")))
                     {
-                        await connection.OpenAsync(_);
-
-                        if (line.Contains("\"marketValue\"") && (line.Contains("Horde") || line.Contains("Alliance")))
+                        string realm = line.Split(["\",\"", "\",[["], StringSplitOptions.RemoveEmptyEntries)[1].Replace("-", "_");
+                        Log.Information($"Processing import for {realm} MarketValues.");
+                        bool doReorderColumns = await ProcessLineAsync(line, realm, realm + "_MarketValues", connection, file);
+                        if (doReorderColumns)
                         {
-                            Log.Information($"Processing import for regularRealmMarketValues.");
-                            bool doReorderColumns = await ProcessLineAsync(line, "regularRealmMarketValues", connection, file);
-                            Log.Information($"Successfully imported regularRealmMarketValues.");
-                            if (doReorderColumns)
-                            {
-                                await OrderColumns(connection, "regularRealmMarketValues");
-                            }
-                        }
-                        else if (line.Contains("\"regionMarketValue\""))
-                        {
-                            Log.Information($"Processing import for regionMarketValues.");
-                            bool doReorderColumns = await ProcessLineAsync(line, "regionMarketValues", connection, file);
-                            Log.Information($"Successfully imported regionMarketValues.");
-                            if (doReorderColumns)
-                            {
-                                await OrderColumns(connection, "regularRealmMarketValues");
-                            }
+                            await OrderColumns(connection, realm + "_MarketValues");
                         }
                     }
-                    await connection.CloseAsync();
+                    else if (line.Contains("\"regionMarketValue\""))
+                    {
+                        string region = line.Split(["\",\"", "\",[["], StringSplitOptions.RemoveEmptyEntries)[1].Replace("-", "_");
+                        Log.Information($"Processing import for {region} RegionalMarketValues.");
+                        bool doReorderColumns = await ProcessLineAsync(line, region, region + "_RegionalMarketValues", connection, file);
+                        if (doReorderColumns)
+                        {
+                            await OrderColumns(connection, region + "_RegionalMarketValues");
+                        }
+                    }
                 });
                 // Archive file, add hash to list, compress file
                 try
@@ -128,7 +124,7 @@ public static partial class DatabaseImportMarketValues
         }
     }
 
-    private static async Task<bool> ProcessLineAsync(string luaLine, string tableName, SqliteConnection connection, string file)
+    private static async Task<bool> ProcessLineAsync(string luaLine, string realmOrRegion, string tableName, SqliteConnection connection, string file)
     {
         bool doReorderColumns = false;
         // Split the line into subparts
@@ -143,6 +139,29 @@ public static partial class DatabaseImportMarketValues
         //double luaUnixTimestamp = Convert.ToDouble(luaLine.Substring(subStart, subEnd - subStart), CultureInfo.InvariantCulture);
         string columnNameTimestamped = "date" + dateTime.AddSeconds(luaUnixTimestamp).ToLocalTime().ToString(CultureInfo.InvariantCulture).Replace("/", "_").Replace(" ", "time").Replace(":", "_");
 
+        bool tableExists = DataBaseCreation.TableExists(connection, tableName);
+        if (!tableExists)
+        {
+            string whatsMissing = realmOrRegion.Contains("Horde") || realmOrRegion.Contains("Alliance") ? "realm + faction" : "region";
+            Log.Warning($"Table for {whatsMissing} : {realmOrRegion} does not exist. Trying to create table.");
+            try
+            {
+                await using (SqliteCommand createTableCmd = new(@$"
+                                                                CREATE TABLE IF NOT EXISTS
+                                                                {tableName} (
+                                                                itemId INTEGER PRIMARY KEY UNIQUE
+                                                                );", connection))
+                {
+                    await createTableCmd.ExecuteNonQueryAsync();
+                };
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error creating table {tableName}: {ex}");
+                ExceptionHandling.ExceptionHandler("DataBaseImportMarketValues.cs->ProcessLineAsync->try->createTableCmd", ex);
+            }
+        }
+
         string pragmaQuery = $"PRAGMA table_info({tableName});";
         await using SqliteCommand sqlcmd = new(pragmaQuery, connection);
         SqliteDataReader pragmaResult = await sqlcmd.ExecuteReaderAsync();
@@ -150,8 +169,8 @@ public static partial class DatabaseImportMarketValues
         {
             if (pragmaResult.GetString(1).Contains(columnNameTimestamped))
             {
-                Log.Warning($"While importing file {file}: Column {columnNameTimestamped} already in table {tableName}");
-                Log.Information("Skipping file.");
+                Log.Warning($"While importing file {realmOrRegion} data from file {file}: Column {columnNameTimestamped} already in table {tableName}");
+                Log.Information("Skipping line.");
                 return doReorderColumns;
             }
         }
@@ -218,6 +237,7 @@ public static partial class DatabaseImportMarketValues
                 doReorderColumns = false;
             }
         });
+        Log.Information($"Successfully imported {tableName}.");
         return doReorderColumns;
     }
 
@@ -251,7 +271,7 @@ public static partial class DatabaseImportMarketValues
                     }
                     // Order the columns
 #pragma warning disable IDE0305 // Simplify collection initialization
-                    columns = columns.OrderBy(x => x).ToList();
+                    columns = columns.OrderByDescending(x => x).ToList();
 #pragma warning restore IDE0305 // Simplify collection initialization
                     foreach (string column in columns)
                     {

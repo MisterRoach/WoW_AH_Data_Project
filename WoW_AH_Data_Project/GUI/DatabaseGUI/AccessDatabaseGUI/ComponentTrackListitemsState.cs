@@ -4,32 +4,32 @@ namespace WoWAHDataProject.GUI.DatabaseGUI.AccessDatabaseGUI;
 
 public class DataBaseAccessTrackListitems : INotifyPropertyChanged
 {
-    private bool isChecked;
-    private string columnName;
+    private bool _isChecked;
     public bool IsChecked
     {
-        get => isChecked;
+        get => _isChecked;
         set
         {
-            if (isChecked == value)
+            if (_isChecked == value)
             {
                 return;
             }
 
-            isChecked = value; RaisePropertyChanged(nameof(IsChecked));
+            _isChecked = value; RaisePropertyChanged(nameof(IsChecked));
         }
     }
+    private string _columnName;
     public string ColumnName
     {
-        get => columnName;
+        get => _columnName;
         set
         {
-            if (columnName == value)
+            if (_columnName == value)
             {
                 return;
             }
 
-            columnName = value; RaisePropertyChanged(nameof(ColumnName));
+            _columnName = value; RaisePropertyChanged(nameof(ColumnName));
         }
     }
 

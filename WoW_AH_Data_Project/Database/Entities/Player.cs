@@ -1,9 +1,8 @@
-﻿namespace WoWAHDataProject.Database.Entities
-{
-    public class Player
-    {
-        public int PlayerId { get; set; }
+﻿namespace WoWAHDataProject.Database.Entities;
 
-        public string PlayerName { get; set; }
-    }
+public class Player
+{
+    public int PlayerId { get; set; }
+
+    public string PlayerName { get; set; }
 }

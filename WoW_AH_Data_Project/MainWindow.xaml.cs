@@ -6,6 +6,7 @@ using WoWAHDataProject.Code;
 using WoWAHDataProject.Database;
 using WoWAHDataProject.GUI;
 using WoWAHDataProject.GUI.DatabaseGUI;
+
 namespace WoWAHDataProject;
 
 /// <summary>
@@ -29,7 +30,7 @@ public partial class MainWindow : Window
         {
             Egg.プロ生ちゃんNumber();
             Log.Information("Miku threw a: " + Egg.えれくとりっく_えんじぇぅ);
-            if(Egg.音)
+            if (Egg.音)
             {
                 Egg.Hatch芸術プロ生ちゃんEgg(this);
             }
@@ -54,12 +55,12 @@ public partial class MainWindow : Window
         }
     }
 
-
     private void BtnSelectLuaConversionClick(object sender, RoutedEventArgs e)
     {
         TSMLuaConvWindow tSMLuaConvWindow = new();
         tSMLuaConvWindow.Show();
     }
+
     private void BtnSelectCombineCsvsClick(object sender, RoutedEventArgs e)
     {
         CombineCSVsWindow combineCSVsWindow = new();
